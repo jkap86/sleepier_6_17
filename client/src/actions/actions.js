@@ -182,7 +182,7 @@ export const fetchLmTrades = (user_id, leagues, season, offset, limit) => {
             console.log(trades.data)
 
             const trades_tips = getTradeTips(trades.data.rows, leagues, season)
-
+            console.log({ trades_tips: trades_tips })
             dispatch({
                 type: 'FETCH_LMTRADES_SUCCESS', payload: {
                     count: trades.data.count,
@@ -205,14 +205,13 @@ export const fetchFilteredLmTrades = (searchedPlayerId, searchedManagerId, leagu
     try {
         const trades = await axios.post('/trade/leaguemate', {
             user_id: user.user.user_id,
-            leaguemates: Object.keys(leagues.leaguematesDict),
             player: searchedPlayerId,
             manager: searchedManagerId,
             offset: offset,
             limit: limit,
         });
-
-        const trades_tips = getTradeTips(trades.data.rows, leagues.leagues, leagues.leaguematesDict, league_season)
+        console.log(trades.data)
+        const trades_tips = getTradeTips(trades.data.rows, leagues.leagues, league_season)
         console.log(trades_tips)
         dispatch({
             type: 'FETCH_FILTERED_LMTRADES_SUCCESS',

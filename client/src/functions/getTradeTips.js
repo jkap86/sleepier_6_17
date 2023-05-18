@@ -1,5 +1,7 @@
 export const getTradeTips = (trades, leagues, season) => {
-
+    console.log({
+        trades, leagues, season
+    })
     let trade_tips = trades.map(trade => {
 
         let trade_away = []
@@ -36,7 +38,7 @@ export const getTradeTips = (trades, leagues, season) => {
             }
         })
 
-        trade.draft_picks.map(pick => {
+        trade.draft_picks?.map(pick => {
             const lm_user_id = pick.new_user.user_id
             if (lm_user_id) {
                 return leagues
@@ -109,7 +111,7 @@ export const getTradeTips = (trades, leagues, season) => {
             }
         })
 
-        trade.draft_picks.map(pick => {
+        trade.draft_picks?.map(pick => {
             const lm_user_id = pick.old_user.user_id
             if (lm_user_id) {
                 return leagues
@@ -143,7 +145,7 @@ export const getTradeTips = (trades, leagues, season) => {
                     })
             }
         })
-
+        console.log({ acquire: acquire })
         return {
             ...trade,
             tips: {

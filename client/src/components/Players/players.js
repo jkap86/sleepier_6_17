@@ -448,14 +448,14 @@ const Players = ({ }) => {
 
     const positionFilter = positionFilterIcon(filterPosition, setFilterPosition, true)
 
-    const player_ids = playersharesFiltered.filter(p => parseInt(allPlayers[parseInt(p.id)]?.years_exp) >= 0).map(p => parseInt(p.id))
+    const player_ids = playersharesFiltered?.filter(p => parseInt(allPlayers[parseInt(p.id)]?.years_exp) >= 0)?.map(p => parseInt(p.id))
 
     const draftClassYears = Array.from(
         new Set(
             player_ids
-                .map(player_id => state.league_season - allPlayers[parseInt(player_id)]?.years_exp)
+                ?.map(player_id => state.league_season - allPlayers[parseInt(player_id)]?.years_exp)
         )
-    ).sort((a, b) => b - a)
+    )?.sort((a, b) => b - a)
 
     const draftClassFilter = draftClassFilterIcon(filterDraftClass, setFilterDraftClass, draftClassYears)
 

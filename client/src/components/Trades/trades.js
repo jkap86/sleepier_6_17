@@ -8,6 +8,7 @@ import TradeInfo from './tradeInfo';
 import Search from '../Home/search';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchFilteredLmTrades, fetchValues, fetchLmTrades, fetchPriceCheckTrades } from '../../actions/actions';
+import '../css/trades.css';
 
 const Trades = ({
 
@@ -28,7 +29,7 @@ const Trades = ({
 
     const [tradesDisplay, setTradesDisplay] = useState([])
     const [tradeCount, setTradeCount] = useState(0)
-    const { user, isLoading: isLoadingUser, error: errorUser } = useSelector((state) => state.user);
+    const { user } = useSelector((state) => state.user);
     const { state: stateState, allPlayers, nflSchedule, leagues, leaguemates, leaguematesDict, playerShares, isLoading: isLoadingLeagues, error: errorLeagues } = useSelector(state => state.leagues)
     const { lmTrades, isLoading: isLoadingLmTrades, error: errorLmTrades } = useSelector(state => state.lmTrades);
     const { isLoading: isLoadingFilteredLmTrades, searches, error } = useSelector(state => state.filteredLmTrades);
@@ -103,9 +104,12 @@ const Trades = ({
 
     useEffect(() => {
         if ((searched_player !== '' || searched_manager !== '') && !searches.find(s => s.player === searched_player.id && s.manager === searched_manager.id)) {
+            console.log(stateState.league_season)
             dispatch(fetchFilteredLmTrades(searched_player.id, searched_manager.id, stateState.league_season, 0, 125))
         }
     }, [searched_player, searched_manager])
+
+
 
     useEffect(() => {
 
@@ -548,7 +552,7 @@ const Trades = ({
             if (searched_player === '' && searched_manager === '') {
 
 
-                dispatch(fetchLmTrades(user.user_id, Object.keys(leaguematesDict), leagues, stateState.league_season, lmTrades.trades.length, 125))
+                dispatch(fetchLmTrades(user.user_id, leagues, stateState.league_season, lmTrades.trades.length, 125))
 
             } else {
                 setPage(Math.ceil(tradesDisplay.length / 25) + 1)
@@ -582,7 +586,7 @@ const Trades = ({
                 className='trades'
                 onChange={(e) => setTab(e.target.value)}
                 value={tab}
-                disabled={isLoadingLmTrades}
+
             >
                 <option>Price Check </option>
                 <option>Leaguemate Trades</option>

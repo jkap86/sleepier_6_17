@@ -133,7 +133,6 @@ div#homepage div.home_wrapper div.dropdown_wrapper {
   right: 0;
   margin: auto;
   z-index: 11;
-  border: 10rem solid transparent;
 }
 div#homepage div.home_wrapper div.dropdown_wrapper p.dropdown_header {
   margin: 0;

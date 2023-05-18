@@ -27,6 +27,11 @@ img.thumbnail {
   border-radius: 50%;
 }
 
+h2 {
+  font-size: 3rem;
+  margin: 2rem auto;
+}
+
 .green {
   color: greenyellow;
 }
@@ -46,7 +51,7 @@ img.thumbnail {
   padding-left: 1rem;
 }
 
-.left p,
+.left > p,
 .left div p.left,
 .left li {
   margin: 0;
@@ -60,7 +65,7 @@ img.thumbnail {
   height: 3rem;
 }
 
-.left:hover p:only-of-type,
+.left:hover > p:only-of-type,
 .left:hover div p:only-of-type,
 .left li:hover,
 .left li.end:hover {
@@ -70,7 +75,7 @@ img.thumbnail {
   background-color: black;
 }
 
-.left:hover p:only-of-type,
+.left:hover > p:only-of-type,
 .left:hover div p:only-of-type {
   outline: 1rem solid black;
   filter: drop-shadow(0 0 1rem white);

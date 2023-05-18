@@ -5,10 +5,14 @@
 div.trend-range {
     position: relative;
     margin: auto;
+    margin-bottom: 2rem;
     font-size: 3.5rem;
     font-family: 'GROUPE', sans-serif;
     height: 7rem;
     width: fit-content;
+    background-color: var(--color3);
+    filter: contrast(2);
+    box-shadow: 0 0 1rem white, inset 0 0 2rem var(--color4);
 
     label.sort {
 
@@ -52,9 +56,14 @@ div.trend-range {
     }
 }
 
-div.search_filter_wrapper {
+div.trade_search_wrapper {
+    flex-direction: column;
+}
+
+div.search_filter_wrapper,
+div.trade_search_wrapper {
     display: flex;
-    flex-direction: row;
+
     justify-content: center;
     width: fit-content;
     margin: auto;
@@ -333,7 +342,7 @@ table.primary {
                 white-space: nowrap;
                 padding-left: 1rem;
 
-                p {
+                >p {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     width: 100%;
@@ -523,6 +532,33 @@ table#trades {
 
         td {
             background-image: radial-gradient(var(--wr) -150%, var(--color4) 100%);
+
+            div.trade_manager {
+
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding-bottom: 2rem;
+
+                div {
+                    display: flex;
+                    flex-direction: row;
+                    justify-content: space-between;
+
+
+                    p.value,
+                    p.trend {
+                        width: fit-content;
+                        font-family: 'GROUPE', sans-serif;
+                        color: var(--wr);
+                        filter: contrast(1.5);
+                        background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
+                        padding: 1rem;
+                        font-size: 85%;
+                    }
+                }
+            }
         }
 
         table.trade_info {
@@ -530,6 +566,14 @@ table#trades {
             td {
                 background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
 
+
+            }
+
+            td.value {
+                font-family: 'GROUPE', sans-serif;
+                font-size: 85%;
+                color: var(--wr);
+                filter: contrast(1.5);
             }
         }
     }

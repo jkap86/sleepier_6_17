@@ -1,6 +1,5 @@
 html,
-body,
-.App {
+body {
   --color1: rgb(0, 0, 25);
   --color2: #00ceb8;
   --color3: midnightblue;
@@ -28,4 +27,9 @@ body,
   padding: 0;
   padding-bottom: 25%;
   position: relative;
+}
+
+.App {
+  height: 100%;
+  width: 100%;
 }
