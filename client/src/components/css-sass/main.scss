@@ -1,0 +1,125 @@
+* {
+    box-sizing: border-box;
+}
+
+.click:hover {
+    cursor: pointer;
+}
+
+a.home {
+    text-decoration: none;
+    color: white;
+    font-weight: 600;
+    font-size: 3rem;
+    display: block;
+    width: fit-content;
+    text-align: left;
+    padding: 2rem 0 0 2rem;
+    margin: 0;
+}
+
+img.thumbnail {
+    height: 7rem;
+    width: 7rem;
+    margin: 0;
+    margin-right: 1rem;
+    vertical-align: middle;
+    border-radius: 50%;
+}
+
+
+
+.green {
+    color: greenyellow;
+}
+
+.red,
+.fa-solid.fa-circle-exclamation {
+    color: red;
+}
+
+
+.yellow {
+    color: gold
+}
+
+.left {
+    text-align: left;
+    white-space: nowrap;
+    padding-left: 1rem;
+}
+
+.left p,
+.left div p.left,
+.left li {
+    margin: 0;
+    margin-right: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: fit-content;
+
+}
+
+.left li {
+    height: 3rem;
+}
+
+
+.left:hover p:only-of-type,
+.left:hover div p:only-of-type,
+.left li:hover,
+.left li.end:hover {
+    overflow: visible;
+    width: fit-content;
+    min-width: 90%;
+    background-color: black;
+}
+
+.left:hover p:only-of-type,
+.left:hover div p:only-of-type {
+    outline: 1rem solid black;
+    filter: drop-shadow(0 0 1rem white);
+
+}
+
+
+
+.left li:hover>span.end {
+    position: absolute;
+    min-width: fit-content;
+    height: 3rem;
+    background-color: inherit;
+    outline: .5rem solid black;
+    direction: ltr;
+}
+
+
+.end:hover {
+    direction: rtl;
+
+}
+
+span.end {
+    direction: ltr;
+    right: 0;
+    width: 100%;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+ol li {
+    list-style: none;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: 1rem;
+    height: 1rem;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: var(--color2);
+}
