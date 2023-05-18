@@ -68,12 +68,18 @@ export const fetchLeagues = (user_id) => {
                     allPlayers: home.data.allplayers,
                     schedule: home.data.schedule,
                     leagues: leagues.data
+                        .filter(league => league.rosters
+                            ?.find(r => r.user_id === user_id || r.co_owners?.find(co => co?.user_id === user_id))
+                        )
                         .map(league => {
+                            const userRoster = league.rosters
+                                ?.find(r => r.user_id === user_id || r.co_owners?.find(co => co?.user_id === user_id))
+
                             return {
                                 ...league,
-                                userRoster: league.rosters
-                                    ?.find(r => r.user_id === user_id || r.co_owners?.find(co => co?.user_id === user_id)),
+                                userRoster: userRoster,
                             }
+
                         })
                 }
             })
@@ -179,7 +185,7 @@ export const fetchLmTrades = (user_id, leagues, season, offset, limit) => {
                 limit: limit
             })
 
-            console.log(trades.data)
+
 
             const trades_tips = getTradeTips(trades.data.rows, leagues, season)
             console.log({ trades_tips: trades_tips })

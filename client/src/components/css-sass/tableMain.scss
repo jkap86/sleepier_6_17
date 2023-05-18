@@ -328,7 +328,7 @@ table.primary {
             }
 
             td.stat {
-                box-shadow: inset 0 0 1rem var(--color1);
+                box-shadow: inset 0 0 1rem var(--color4);
 
                 p.stat,
                 span.player_score {
@@ -527,53 +527,64 @@ table.primary {
 }
 
 table#trades {
-    table.trade_summary {
-        border: .5rem double var(--color2);
+    tr.primary {
+        table.trade_summary {
+            border: .5rem double var(--color2);
 
-        td {
-            background-image: radial-gradient(var(--wr) -150%, var(--color4) 100%);
+            td {
+                background-image: radial-gradient(var(--wr) -150%, var(--color4) 100%);
 
-            div.trade_manager {
+                div.trade_manager {
 
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-                padding-bottom: 2rem;
-
-                div {
+                    height: 100%;
                     display: flex;
-                    flex-direction: row;
+                    flex-direction: column;
                     justify-content: space-between;
+                    padding-bottom: 2rem;
+
+                    div {
+                        display: flex;
+                        flex-direction: row;
+                        justify-content: space-between;
 
 
-                    p.value,
-                    p.trend {
-                        width: fit-content;
-                        font-family: 'GROUPE', sans-serif;
-                        color: var(--wr);
-                        filter: contrast(1.5);
-                        background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
-                        padding: 1rem;
-                        font-size: 85%;
+                        p.value,
+                        p.trend {
+                            width: fit-content;
+                            font-family: 'GROUPE', sans-serif;
+
+                            filter: contrast(1.25);
+                            background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
+                            padding: 1rem;
+                            font-size: 85%;
+                        }
                     }
                 }
+            }
+
+            table.trade_info {
+
+                td.value {
+                    font-family: 'GROUPE', sans-serif;
+                    font-size: 85%;
+
+                    filter: contrast(1.5);
+                }
+            }
+        }
+    }
+
+    tr.primary.active {
+        table.trade_summary {
+            td {
+                background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
             }
         }
 
         table.trade_info {
-
             td {
-                background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
-
-
-            }
-
-            td.value {
-                font-family: 'GROUPE', sans-serif;
-                font-size: 85%;
-                color: var(--wr);
-                filter: contrast(1.5);
+                background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
+                box-shadow: inset 0 0 1rem var(--color2);
             }
         }
     }

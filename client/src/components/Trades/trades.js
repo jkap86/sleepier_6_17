@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router-dom";
 import { getTradeTips } from '../../functions/getTradeTips';
 import TableMain from '../Home/tableMain';
-import { loadingIcon, avatar } from '../../functions/misc';
+import { loadingIcon, avatar, getTrendColor } from '../../functions/misc';
 import TradeInfo from './tradeInfo';
 import Search from '../Home/search';
 import { useSelector, useDispatch } from 'react-redux';
@@ -37,7 +37,7 @@ const Trades = ({
     const { pricecheckTrades, isLoading: isLoadingPricecheckTrades, error: errorPcTrades } = useSelector(state => state.pricecheckTrades);
     const loadRef = useRef();
 
-    console.log(searches)
+
 
     useEffect(() => {
         switch (tab) {
@@ -207,9 +207,8 @@ const Trades = ({
                                                         `${cur.season} ${`${cur.order <= 4 ? 'Early' : cur.order >= 9 ? 'Late' : 'Mid'}`} ${cur.round}`
                                                     ]?.[superflex ? 'sf' : 'oneqb'] || 0)) || 0
                                                     , 0)
+                                        const trend = cur_value - trans_value
 
-                                        const number = Object.keys(trade.adds || {}).filter(a => trade.adds[a] === roster?.user_id).length
-                                            + trade.draft_picks.filter(p => p.owner_id === roster?.roster_id).length
                                         return {
                                             id: trade.transaction_id,
                                             list: [
@@ -223,12 +222,15 @@ const Trades = ({
                                                                     trans_value.toLocaleString("en-US")
                                                                 }
                                                             </p>
-                                                            <p className='trend'>
+                                                            <p
+                                                                className={(trend > 0 ? 'green trend' : trend < 0 ? 'red trend' : 'trend')}
+                                                                style={getTrendColor(trend, 1)}
+                                                            >
                                                                 {
-                                                                    cur_value - trans_value >= 0 ? '+' : ''
+                                                                    trend > 0 ? '+' : ''
                                                                 }
                                                                 {
-                                                                    (cur_value - trans_value).toString()
+                                                                    trend.toString()
                                                                 }
 
                                                             </p>
@@ -249,8 +251,10 @@ const Trades = ({
                                                     text: <table className='trade_info'>
                                                         <tbody>
                                                             {
-                                                                Object.keys(trade.adds || {}).filter(a => trade.adds[a] === roster?.user_id).map(player_id =>
-                                                                    <tr
+                                                                Object.keys(trade.adds || {}).filter(a => trade.adds[a] === roster?.user_id).map(player_id => {
+                                                                    const value = trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] || '-'
+                                                                    const trend = cur_values?.[player_id] && trans_values?.[player_id] && (cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'])
+                                                                    return <tr
                                                                         className={
                                                                             `${trade.tips?.trade_away && trade.tips?.trade_away?.find(p => p.player_id === player_id)?.manager.user_id === rid
 
@@ -262,16 +266,19 @@ const Trades = ({
                                                                     >
                                                                         <td colSpan={4} className='left'><p><span>+ {allPlayers[player_id]?.full_name}</span></p></td>
                                                                         <td className='value'>
-                                                                            {trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] || '-'}
+                                                                            {value}
                                                                         </td>
-                                                                        <td className='value'>
+                                                                        <td
+                                                                            className={trend > 0 ? 'green stat value' : trend < 0 ? 'red stat value' : 'stat value'}
+                                                                            style={getTrendColor(trend, 1)}
+                                                                        >
                                                                             {
-                                                                                cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] > 0 ? '+' : ''
+                                                                                trend > 0 ? '+' : ''
                                                                             }
-                                                                            {cur_values?.[player_id] && trans_values?.[player_id] && (cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb']).toString() || ''}
+                                                                            {trend}
                                                                         </td>
                                                                     </tr>
-                                                                )
+                                                                })
                                                             }
                                                             {
                                                                 trade.draft_picks
@@ -279,6 +286,9 @@ const Trades = ({
                                                                     .sort((a, b) => (a.season) - b.season || a.round - b.round)
                                                                     .map(pick => {
                                                                         const ktc_name = `${pick.season} ${pick.order <= 4 ? 'Early' : pick.order >= 9 ? 'Late' : 'Mid'} ${pick.round}`
+
+                                                                        const value = trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] || '-'
+                                                                        const trend = cur_values?.[ktc_name] && trans_values?.[ktc_name] && ((cur_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'])).toString() || '-'
                                                                         return <tr>
                                                                             <td
                                                                                 colSpan={4}
@@ -295,14 +305,16 @@ const Trades = ({
                                                                             </td>
                                                                             <td className='value'>
                                                                                 {
-                                                                                    trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] || '-'
+                                                                                    value
                                                                                 }
                                                                             </td>
-                                                                            <td className='value'>
+                                                                            <td
+                                                                                className={trend > 0 ? 'green stat value' : trend < 0 ? 'red stat value' : 'stat value'}
+                                                                                style={getTrendColor(trend, 1)}>
                                                                                 {
                                                                                     cur_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] > 0 ? '+' : ''
                                                                                 }
-                                                                                {cur_values?.[ktc_name] && trans_values?.[ktc_name] && ((cur_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'])).toString() || '-'}
+                                                                                {trend}
                                                                             </td>
                                                                         </tr>
                                                                     })

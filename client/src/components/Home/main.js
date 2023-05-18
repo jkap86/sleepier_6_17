@@ -43,12 +43,13 @@ const Main = () => {
             display = <Players />
             break;
         case 'Trades':
-            display = !isLoadingLmTrades && <Trades /> || loadingIcon
+            display = <Trades />
             break;
         default:
             break;
     }
 
+    console.log({ isLoadingLmTrades: isLoadingLmTrades })
     return <>
         {
             (isLoadingUser || isLoadingLeagues) ? loadingIcon

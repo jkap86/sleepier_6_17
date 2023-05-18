@@ -44,7 +44,7 @@ export const filterData = (leagues, type1, type2, tab, season) => {
     switch (tab) {
         case 'Players':
             const players_dict = {}
-            leagues
+            filteredLeagues2
                 .forEach(league => {
                     league.rosters
                         ?.forEach(roster => {

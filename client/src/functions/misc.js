@@ -118,3 +118,16 @@ export const scoring_settings_display = [
     "rec_td",
     "rec_2pt"
 ]
+
+export const getTrendColor = (trend, adjustment) => {
+    return trend > 0
+        ? {
+            color: `rgb(${255 - trend / adjustment}, 255, ${255 - trend / adjustment})`,
+
+        }
+        : trend < 0
+            ? {
+                color: `rgb(255, ${255 + trend / adjustment}, ${255 + trend / adjustment})`
+            }
+            : {}
+}
