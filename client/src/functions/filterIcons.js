@@ -63,9 +63,10 @@ export const draftClassFilterIcon = (filterDraftClass, setFilterDraftClass, draf
     return <span className="team">
         <label>
             {
-                filterDraftClass === 'All' ?
+                <>
                     <i className="fa-solid fa-graduation-cap icon"></i>
-                    : <strong className="draft-year"><em>{filterDraftClass}</em></strong>
+                    <strong className="draft-year"><em>{filterDraftClass !== 'All' && filterDraftClass}</em></strong>
+                </>
             }
             <select
                 className="hidden_behind click"

@@ -62,10 +62,22 @@ div.trade_search_wrapper {
 
 div.search_filter_wrapper,
 div.trade_search_wrapper {
-    display: flex;
+    >div:first-child {
+        display: flex;
+        justify-content: right;
+        width: 25%;
+    }
 
+    >div:last-child {
+        display: flex;
+        justify-content: left;
+        width: 25%;
+    }
+
+    display: flex;
+    position: relative;
     justify-content: center;
-    width: fit-content;
+    width: 50%;
     margin: auto;
 
     div.search_wrapper {
@@ -104,6 +116,7 @@ div.trade_search_wrapper {
             font-weight: 900;
             padding-right: 3rem;
             box-shadow: 0 0 1rem var(--color2);
+
         }
 
         button.input {
@@ -245,7 +258,7 @@ table.modal {
 }
 
 table.primary {
-    font-size: 2.5rem;
+    font-size: 3rem;
 
     thead {
         filter: drop-shadow(0 0 1rem silver);
@@ -334,20 +347,21 @@ table.primary {
                 p.stat,
                 span.player_score {
                     font-family: 'GROUPE', sans-serif;
-
+                    font-size: 85%;
                 }
             }
 
             td.left {
                 text-align: left;
                 white-space: nowrap;
-                padding-left: 1rem;
+                padding: 0 .5rem;
 
                 >p {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     width: 100%;
-
+                    position: relative;
+                    z-index: 2;
 
                 }
             }
@@ -528,7 +542,15 @@ table.primary {
 }
 
 table#trades {
+
+    table.primary_body {
+        position: sticky;
+        top: 7rem;
+    }
+
     tr.primary {
+
+
         table.trade_summary {
             outline: .25rem ridge var(--wr);
 
@@ -540,14 +562,20 @@ table#trades {
                     height: 100%;
                     display: flex;
                     flex-direction: column;
-                    justify-content: space-between;
+                    justify-content: flex-start;
                     padding-bottom: 2rem;
 
                     div {
                         display: flex;
+                        align-items: center;
+                        height: 100%;
+                    }
+
+                    div:first-of-type {
+                        display: flex;
                         flex-direction: row;
                         justify-content: space-between;
-
+                        height: fit-content;
 
                         p.value,
                         p.trend {
@@ -557,7 +585,7 @@ table#trades {
                             filter: contrast(1.25);
                             background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
                             padding: 1rem;
-                            font-size: 85%;
+                            font-size: 75%;
                         }
                     }
                 }
@@ -567,7 +595,7 @@ table#trades {
 
                 td.value {
                     font-family: 'GROUPE', sans-serif;
-                    font-size: 85%;
+                    font-size: 75%;
 
                     filter: contrast(1.5);
                 }
@@ -576,7 +604,7 @@ table#trades {
     }
 
     tr.primary.active {
-
+        position: unset;
 
 
         table.trade_summary {
@@ -601,17 +629,10 @@ table#trades {
 
             tr.trade_summary {
                 position: sticky;
-                top: 14rem;
-                z-index: 7;
-            }
-
-
-
-            tr.trade_summary:first-of-type {
-                position: sticky;
                 top: 7rem;
-                z-index: 9;
+                z-index: 8;
             }
+
         }
 
         table.trade_info {
@@ -625,21 +646,28 @@ table#trades {
         }
     }
 
+
+
     tr.primary.active2 {
 
+        position: sticky;
+        top: 7rem;
+        z-index: 6;
 
-        >td {
-            background-image: none;
-        }
-
-        table.secondary {
-
+        thead,
+        tr,
+        div {
             position: sticky;
-            top: 14rem;
-            z-index: 9;
-
-
-
+            top: 7rem;
         }
+
+
+
+
+
+
+
+
+
     }
 }

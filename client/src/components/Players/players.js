@@ -186,13 +186,13 @@ const Players = ({ }) => {
         [
             {
                 text: <> Player</>,
-                colSpan: 8,
+                colSpan: 10,
 
             },
 
             {
                 text: 'Owned',
-                colSpan: 3,
+                colSpan: 5,
             },
             {
                 text: category_dropdown(statType1, setStatType1),
@@ -286,9 +286,11 @@ const Players = ({ }) => {
                     ? cur_value?.oneqb || '-'
                     : statType1 === 'SF Trend'
                         ? (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
-                        : trend_games?.length > 0
-                        && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType1] || 0), 0) / trend_games?.length)?.toFixed(1)
-                        || '-'
+                        : statType1 === '1QB Trend'
+                            ? (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
+                            : trend_games?.length > 0
+                            && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType1] || 0), 0) / trend_games?.length)?.toFixed(1)
+                            || '-'
 
             const stat_trend2 = statType2 === 'KTC SF'
                 ? cur_value?.sf || '-'
@@ -296,9 +298,11 @@ const Players = ({ }) => {
                     ? cur_value?.oneqb || '-'
                     : statType2 === 'SF Trend'
                         ? (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
-                        : trend_games?.length > 0
-                        && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType2] || 0), 0) / trend_games?.length)?.toFixed(1)
-                        || '-'
+                        : statType2 === '1QB Trend'
+                            ? (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
+                            : trend_games?.length > 0
+                            && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType2] || 0), 0) / trend_games?.length)?.toFixed(1)
+                            || '-'
 
             return {
                 id: player.id,
@@ -313,7 +317,7 @@ const Players = ({ }) => {
                 list: [
                     {
                         text: player.id.includes('_') ? pick_name : `${allPlayers[player.id]?.position} ${allPlayers[player.id]?.full_name} ${player.id.includes('_') ? '' : allPlayers[player.id]?.team || 'FA'}` || `INACTIVE PLAYER`,
-                        colSpan: 8,
+                        colSpan: 10,
                         className: 'left',
                         image: {
                             src: allPlayers[player.id] ? player.id : headshot,
@@ -323,13 +327,13 @@ const Players = ({ }) => {
                     },
 
                     {
-                        text: <span>
-                            {player.leagues_owned.length.toString()}
-                            &nbsp;
-                            < em >
-                                ({((player.leagues_owned.length / filteredLeagueCount) * 100).toFixed(1) + '%'})
-                            </em >
-                        </span>,
+                        text: player.leagues_owned.length.toString(),
+                        colSpan: 2
+                    },
+                    {
+                        text: < em >
+                            {((player.leagues_owned.length / filteredLeagueCount) * 100).toFixed(1) + '%'}
+                        </em >,
                         colSpan: 3
                     },
                     {
@@ -429,13 +433,13 @@ const Players = ({ }) => {
             (a, b) => (sortBy === statType1.replace(/_/g, ' ')
                 ? (parseInt(b.list[2].text.props.children) || 0) - (parseInt(a.list[2].text.props.children) || 0)
                 : sortBy === statType2.replace(/_/g, ' ')
-                    ? (parseFloat(b.list[3].text.props.children) || 0) - (parseFloat(a.list[3].text.props.children) || 0)
+                    ? (parseFloat(b.list[4].text.props.children) || 0) - (parseFloat(a.list[4].text.props.children) || 0)
                     : sortBy === 'PPG'
-                        ? (parseFloat(b.list[4].text.props.children) || 0) - (parseFloat(a.list[4].text.props.children) || 0)
+                        ? (parseFloat(b.list[5].text.props.children) || 0) - (parseFloat(a.list[5].text.props.children) || 0)
                         : sortBy === 'GP'
-                            ? (parseInt(b.list[5].text) || 0) - (parseInt(a.list[5].text) || 0)
+                            ? (parseInt(b.list[6].text) || 0) - (parseInt(a.list[6].text) || 0)
 
-                            : (parseInt(b.list[1].text.props.children) || 0) - (parseInt(a.list[1].text.props.children) || 0)
+                            : (parseInt(b.list[1].text) || 0) - (parseInt(a.list[1].text) || 0)
 
             ) || parseInt(a.id.split('_')[0]) - parseInt(b.id.split('_')[0])
                 || parseInt(a.id.split('_')[1]) - parseInt(b.id.split('_')[1])

@@ -85,7 +85,7 @@ const Trades = ({
             dispatch(fetchValues([...dates, new Date(new Date() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]], null))
         }
 
-    }, [page])
+    }, [tradesDisplay, page])
 
 
     useEffect(() => {
@@ -235,14 +235,16 @@ const Trades = ({
 
                                                             </p>
                                                         </div>
-                                                        <p>
-                                                            {
-                                                                avatar(
-                                                                    roster?.avatar, 'user avatar', 'user'
-                                                                )
-                                                            }
-                                                            <span>{roster?.username || 'Orphan'}</span>
-                                                        </p>
+                                                        <div>
+                                                            <p>
+                                                                {
+                                                                    avatar(
+                                                                        roster?.avatar, 'user avatar', 'user'
+                                                                    )
+                                                                }
+                                                                <span>{roster?.username || 'Orphan'}</span>
+                                                            </p>
+                                                        </div>
                                                     </div>,
                                                     colSpan: 3,
                                                     className: 'left trade_manager'
@@ -380,16 +382,8 @@ const Trades = ({
                                                     rowSpan: 2,
                                                     className: 'small'
                                                 }
-                                            ],
-                                            secondary_table: (
-                                                <TradeInfo
-                                                    trade={trade}
-                                                    allPlayers={allPlayers}
-                                                    state={stateState}
-                                                    user={user}
-                                                    stateDynastyRankings={stateDynastyRankings}
-                                                />
-                                            )
+                                            ]
+
                                         }
                                     })
 

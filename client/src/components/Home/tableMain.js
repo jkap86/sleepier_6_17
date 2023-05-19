@@ -38,9 +38,11 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
             search ?
 
                 <div className='search_filter_wrapper' ref={searchRef}>
-                    {
-                        options1?.map(option => option)
-                    }
+                    <div>
+                        {
+                            options1?.map(option => option)
+                        }
+                    </div>
                     <Search
                         id={id}
                         sendSearched={(data) => setSearched(data)}
@@ -49,9 +51,11 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                             return b.search
                         })}
                     />
-                    {
-                        options2?.map(option => option)
-                    }
+                    <div>
+                        {
+                            options2?.map(option => option)
+                        }
+                    </div>
                 </div>
                 :
                 null
@@ -152,7 +156,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                                         <td
                                             colSpan={item.list.reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}
                                         >
-                                            <table >
+                                            <table className={`${type}_body`}>
                                                 <tbody>
                                                     <tr
                                                         className={`${type} click ${itemActive === item.id ? 'active' : ''}`}

@@ -56,9 +56,22 @@ div.trade_search_wrapper {
 div.search_filter_wrapper,
 div.trade_search_wrapper {
   display: flex;
+  position: relative;
   justify-content: center;
-  width: fit-content;
+  width: 50%;
   margin: auto;
+}
+div.search_filter_wrapper > div:first-child,
+div.trade_search_wrapper > div:first-child {
+  display: flex;
+  justify-content: right;
+  width: 25%;
+}
+div.search_filter_wrapper > div:last-child,
+div.trade_search_wrapper > div:last-child {
+  display: flex;
+  justify-content: left;
+  width: 25%;
 }
 div.search_filter_wrapper div.search_wrapper,
 div.trade_search_wrapper div.search_wrapper {
@@ -223,7 +236,7 @@ table.modal td:last-of-type {
 }
 
 table.primary {
-  font-size: 2.5rem;
+  font-size: 3rem;
 }
 table.primary thead {
   filter: drop-shadow(0 0 1rem silver);
@@ -298,16 +311,19 @@ table.primary tbody tr td.stat {
 table.primary tbody tr td.stat p.stat,
 table.primary tbody tr td.stat span.player_score {
   font-family: "GROUPE", sans-serif;
+  font-size: 85%;
 }
 table.primary tbody tr td.left {
   text-align: left;
   white-space: nowrap;
-  padding-left: 1rem;
+  padding: 0 0.5rem;
 }
 table.primary tbody tr td.left > p {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
+  position: relative;
+  z-index: 2;
 }
 table.primary tbody tr.active {
   position: sticky;
@@ -424,6 +440,10 @@ table.primary table.secondary tbody tr.active2 td table.tertiary tbody tr.active
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
 }
 
+table#trades table.primary_body {
+  position: sticky;
+  top: 7rem;
+}
 table#trades tr.primary table.trade_summary {
   outline: 0.25rem ridge var(--wr);
 }
@@ -434,27 +454,36 @@ table#trades tr.primary table.trade_summary td div.trade_manager {
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding-bottom: 2rem;
 }
 table#trades tr.primary table.trade_summary td div.trade_manager div {
   display: flex;
+  align-items: center;
+  height: 100%;
+}
+table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-type {
+  display: flex;
   flex-direction: row;
   justify-content: space-between;
+  height: fit-content;
 }
-table#trades tr.primary table.trade_summary td div.trade_manager div p.value,
-table#trades tr.primary table.trade_summary td div.trade_manager div p.trend {
+table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-type p.value,
+table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-type p.trend {
   width: fit-content;
   font-family: "GROUPE", sans-serif;
   filter: contrast(1.25);
   background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
   padding: 1rem;
-  font-size: 85%;
+  font-size: 75%;
 }
 table#trades tr.primary table.trade_summary table.trade_info td.value {
   font-family: "GROUPE", sans-serif;
-  font-size: 85%;
+  font-size: 75%;
   filter: contrast(1.5);
+}
+table#trades tr.primary.active {
+  position: unset;
 }
 table#trades tr.primary.active table.trade_summary td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
@@ -466,25 +495,23 @@ table#trades tr.primary.active table.trade_summary td table div.trade_manager di
 }
 table#trades tr.primary.active table.trade_summary tr.trade_summary {
   position: sticky;
-  top: 14rem;
-  z-index: 7;
-}
-table#trades tr.primary.active table.trade_summary tr.trade_summary:first-of-type {
-  position: sticky;
   top: 7rem;
-  z-index: 9;
+  z-index: 8;
 }
 table#trades tr.primary.active table.trade_info td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
   box-shadow: inset 0 0 1rem var(--color2);
 }
-table#trades tr.primary.active2 > td {
-  background-image: none;
-}
-table#trades tr.primary.active2 table.secondary {
+table#trades tr.primary.active2 {
   position: sticky;
-  top: 14rem;
-  z-index: 9;
+  top: 7rem;
+  z-index: 6;
+}
+table#trades tr.primary.active2 thead,
+table#trades tr.primary.active2 tr,
+table#trades tr.primary.active2 div {
+  position: sticky;
+  top: 7rem;
 }
 
 /*# sourceMappingURL=tableMain.css.map */

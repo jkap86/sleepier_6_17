@@ -14,6 +14,7 @@ const Main = () => {
     const { isLoadingUser, errorUser, type1, type2, tab, user } = useSelector((state) => state.user);
     const { isLoadingLeagues, state, leagues } = useSelector(state => state.leagues);
     const { isLoading: isLoadingLmTrades } = useSelector(state => state.lmTrades);
+    const { filteredData } = useSelector(state => state.filteredData);
 
     useEffect(() => {
         dispatch(fetchUser(params.username));
@@ -22,11 +23,14 @@ const Main = () => {
     useEffect(() => {
         if (user.user_id) {
             dispatch(fetchLeagues(user.user_id))
-            dispatch(fetchLmTrades(user.user_id, leagues, state.league_season, 0, 125))
         }
     }, [user, dispatch])
 
-
+    useEffect(() => {
+        if (user.user_id && leagues?.length > 0) {
+            dispatch(fetchLmTrades(user.user_id, leagues, state.league_season, 0, 125))
+        }
+    }, [user, leagues, dispatch])
 
 
     useEffect(() => {
@@ -35,6 +39,7 @@ const Main = () => {
 
         }
     }, [leagues, type1, type2, tab])
+
 
     let display;
 

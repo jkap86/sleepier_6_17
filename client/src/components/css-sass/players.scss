@@ -75,19 +75,35 @@ span.team {
     label {
         position: relative;
         width: fit-content;
-        filter: drop-shadow(0 0 .5rem var(--color2));
+
+        width: 7rem;
+        height: 7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        strong.draft-year {
+            font-size: 5rem;
+            position: relative;
+            z-index: 0;
+            color: var(--color2);
+
+        }
 
         img.icon {
-            width: 8rem;
-            height: 8rem;
+            width: 7rem;
+            height: 7rem;
 
         }
 
         i.icon {
             font-size: 7rem;
             text-shadow: 0 0 1rem black;
-            color: silver;
-
+            color: blueviolet;
+            position: absolute;
+            z-index: 0;
+            opacity: .5;
+            filter: contrast(2);
         }
 
         select.hidden_behind {
