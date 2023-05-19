@@ -96,7 +96,7 @@ export const filterData = (leagues, type1, type2, tab, season) => {
                         })
                 })
 
-            console.log(players_dict)
+
             filteredData = Object.values(players_dict).map(player => {
                 return {
                     ...player,
@@ -104,6 +104,35 @@ export const filterData = (leagues, type1, type2, tab, season) => {
                         .filter(l => !l.rosters?.find(r => r.players?.includes(player.id)))
                 }
             })
+            break;
+        case 'Leagues':
+            filteredData = filteredLeagues2
+            break;
+        case 'Leaguemates':
+            const lm_dict = {}
+            filteredLeagues2
+                .forEach(league => {
+                    league.rosters
+                        ?.filter(roster => parseInt(roster.user_id) > 0 && roster.user_id !== league.userRoster.user_id && league.userRoster?.players?.length > 0)
+                        ?.forEach(roster => {
+                            let lm_leagues = lm_dict[roster.user_id] || {
+                                user_id: roster.user_id,
+                                username: roster.username,
+                                avatar: roster.avatar,
+                                leagues: []
+                            }
+
+                            lm_leagues.leagues.push({
+                                ...league,
+                                lmRoster: roster
+                            })
+
+                            lm_dict[roster.user_id] = lm_leagues
+                        })
+                })
+
+
+            filteredData = Object.values(lm_dict)
             break;
         default:
             break;

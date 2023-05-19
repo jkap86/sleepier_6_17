@@ -343,6 +343,15 @@ table.primary tbody tr.active2 td div.secondary.nav {
   overflow: hidden;
   background-color: black;
 }
+table.primary tbody tr.active2 td div.secondary.nav div {
+  width: 50%;
+  height: 7rem;
+  display: flex;
+  justify-content: space-evenly;
+  margin: auto;
+  overflow: hidden;
+  background-color: black;
+}
 table.primary tbody tr.active2 td div.secondary.nav button {
   background-color: transparent;
   font-family: "Ubuntu Mono", sans-serif;
@@ -407,9 +416,6 @@ table.primary table.secondary tbody tr.active2 td div.tertiary.nav div button.ac
 }
 table.primary table.secondary tbody tr.active2 td table.lineup,
 table.primary table.secondary tbody tr.active2 td table.subs {
-  display: inline-table;
-  width: 50%;
-  vertical-align: top;
   position: sticky;
   top: 28rem;
   z-index: 0;
@@ -420,11 +426,8 @@ table.primary table.secondary tbody tr.active2 td table.subs tr.active_wrapper {
   top: 35rem;
   z-index: 5;
 }
-table.primary table.secondary tbody tr.active2 td table.tertiary.subs td {
-  background-image: radial-gradient(black -100%, royalblue 500%);
-}
-table.primary table.secondary tbody tr.active2 td table.tertiary.lineup td {
-  background-image: radial-gradient(black -100%, blueviolet 500%);
+table.primary table.secondary tbody tr.active2 td table.tertiary {
+  font-size: 85%;
 }
 table.primary table.secondary tbody tr.active2 td table.tertiary thead {
   position: sticky;
@@ -438,6 +441,28 @@ table.primary table.secondary tbody tr.active2 td table.tertiary tbody tr.active
 }
 table.primary table.secondary tbody tr.active2 td table.tertiary tbody tr.active td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
+}
+table.primary table.subs,
+table.primary table.lineup {
+  display: inline-table;
+  width: 50%;
+  vertical-align: top;
+  position: sticky;
+  top: 14rem;
+  box-shadow: 0 0 1rem white;
+}
+table.primary table.subs tr.active_wrapper,
+table.primary table.lineup tr.active_wrapper {
+  position: sticky;
+  top: 21rem;
+  z-index: 5;
+}
+table.primary table.subs tbody tr td {
+  background-image: radial-gradient(black -100%, royalblue 500%);
+}
+table.primary table.lineup tbody tr td {
+  background-image: radial-gradient(black -100%, blueviolet 500%);
+  box-shadow: inset 0 0 1rem rgb(48, 25, 52);
 }
 
 table#trades table.primary_body {
@@ -475,11 +500,14 @@ table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-ty
   filter: contrast(1.25);
   background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
   padding: 1rem;
-  font-size: 75%;
+  font-size: 2rem;
+}
+table#trades tr.primary table.trade_summary table.trade_info td {
+  font-size: 2.5rem;
 }
 table#trades tr.primary table.trade_summary table.trade_info td.value {
   font-family: "GROUPE", sans-serif;
-  font-size: 75%;
+  font-size: 2rem;
   filter: contrast(1.5);
 }
 table#trades tr.primary.active {

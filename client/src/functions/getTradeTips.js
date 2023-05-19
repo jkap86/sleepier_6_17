@@ -14,13 +14,14 @@ export const getTradeTips = (trades, leagues, leaguemates, season) => {
                         && league.league_id !== trade.leagueLeagueId
                     )
                     .map(league => {
+                        const lmRoster = league.rosters.find(r => r.user_id === lm_user_id)
                         return trade_away.push({
                             type: 'player',
                             player_id: add,
                             manager: {
                                 user_id: lm_user_id,
-                                username: leaguemates[lm_user_id]?.username || 'Orphan',
-                                avatar: leaguemates[lm_user_id]?.avatar
+                                username: lmRoster?.username || 'Orphan',
+                                avatar: lmRoster?.avatar
                             },
                             league: {
                                 league_id: league.league_id,
@@ -48,13 +49,14 @@ export const getTradeTips = (trades, leagues, leaguemates, season) => {
                         && league.league_id !== trade.leagueLeagueId
                     )
                     .map(league => {
+                        const lmRoster = league.rosters.find(r => r.user_id === lm_user_id)
                         return trade_away.push({
                             type: 'pick',
                             player_id: pick,
                             manager: {
                                 user_id: lm_user_id,
-                                username: leaguemates[lm_user_id]?.username || 'Orphan',
-                                avatar: leaguemates[lm_user_id]?.avatar
+                                username: lmRoster?.username || 'Orphan',
+                                avatar: lmRoster?.avatar
                             },
                             league: {
                                 league_id: league.league_id,
@@ -85,13 +87,14 @@ export const getTradeTips = (trades, leagues, leaguemates, season) => {
                         )
                     )
                     .map(league => {
+                        const lmRoster = league.rosters.find(r => r.user_id === lm_user_id)
                         return acquire.push({
                             type: 'player',
                             player_id: drop,
                             manager: {
                                 user_id: lm_user_id,
-                                username: leaguemates[lm_user_id]?.username || 'Orphan',
-                                avatar: leaguemates[lm_user_id]?.avatar
+                                username: lmRoster?.username || 'Orphan',
+                                avatar: lmRoster?.avatar
                             },
                             league: {
                                 league_id: league.league_id,
@@ -119,13 +122,14 @@ export const getTradeTips = (trades, leagues, leaguemates, season) => {
                         && league.league_id !== trade.leagueLeagueId
                     )
                     .map(league => {
+                        const lmRoster = league.rosters.find(r => r.user_id === lm_user_id)
                         return acquire.push({
                             type: 'pick',
                             player_id: pick,
                             manager: {
                                 user_id: lm_user_id,
-                                username: leaguemates[lm_user_id]?.username || 'Orphan',
-                                avatar: leaguemates[lm_user_id]?.avatar
+                                username: lmRoster?.username || 'Orphan',
+                                avatar: lmRoster?.avatar
                             },
                             league: {
                                 league_id: league.league_id,

@@ -220,12 +220,12 @@ const Players = ({ }) => {
     const playerShares_body = playersharesFiltered
         ?.filter(x =>
             (
-                x.id.includes('_') || allPlayers[x.id])
+                x.id?.includes('_') || allPlayers[x.id])
             && (
                 filterPosition === allPlayers[x.id]?.position
                 || filterPosition.split('/').includes(allPlayers[x.id]?.position?.slice(0, 1))
                 || (
-                    filterPosition === 'Picks' && x.id.includes('_')
+                    filterPosition === 'Picks' && x.id?.includes('_')
                 )
             ) && (
                 filterTeam === 'All' || allPlayers[x.id]?.team === filterTeam
@@ -238,7 +238,7 @@ const Players = ({ }) => {
             let ktc_name;
             let cur_value;
             let prev_value;
-            if (player.id.includes('_')) {
+            if (player.id?.includes('_')) {
                 const pick_split = player.id.split('_')
                 pick_name = `${pick_split[0]} ${pick_split[1]}.${pick_split[2].toLocaleString("en-US", { minimumIntegerDigits: 2 })}`
                 ktc_name = `${pick_split[0]} ${parseInt(pick_split[2]) <= 4 ? 'Early' : parseInt(pick_split[2]) >= 9 ? 'Late' : 'Mid'} ${pick_split[1]}`

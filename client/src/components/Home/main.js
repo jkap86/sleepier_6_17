@@ -7,6 +7,8 @@ import Heading from "./heading";
 import '../css/main.css';
 import Players from "../Players/players";
 import Trades from '../Trades/trades';
+import Leagues from "../Leagues/leagues";
+import Leaguemates from "../Leaguemates/leaguemates";
 
 const Main = () => {
     const params = useParams();
@@ -49,6 +51,12 @@ const Main = () => {
             break;
         case 'Trades':
             display = <Trades />
+            break;
+        case 'Leagues':
+            display = <Leagues />
+            break;
+        case 'Leaguemates':
+            display = <Leaguemates />
             break;
         default:
             break;

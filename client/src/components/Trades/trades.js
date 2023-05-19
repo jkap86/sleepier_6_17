@@ -155,12 +155,12 @@ const Trades = ({
                                         list: [
                                             {
                                                 text: new Date(parseInt(trade.status_updated)).toLocaleDateString('en-US') + ' ' + new Date(parseInt(trade.status_updated)).toLocaleTimeString('en-US', { hour: "2-digit", minute: "2-digit" }),
-                                                colSpan: 3,
+                                                colSpan: 4,
                                                 className: 'small'
                                             },
                                             {
                                                 text: trade['league.name'],
-                                                colSpan: 7,
+                                                colSpan: 9,
 
                                                 image: {
                                                     src: trade.league?.avatar,
@@ -246,7 +246,7 @@ const Trades = ({
                                                             </p>
                                                         </div>
                                                     </div>,
-                                                    colSpan: 3,
+                                                    colSpan: 4,
                                                     className: 'left trade_manager'
                                                 },
                                                 {
@@ -257,19 +257,21 @@ const Trades = ({
                                                                     const value = trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] || '-'
                                                                     const trend = cur_values?.[player_id] && trans_values?.[player_id] && (cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'])
                                                                     return <tr>
-                                                                        <td colSpan={4} className='left' ><p><span className={
+                                                                        <td colSpan={11} className='left' ><p><span className={
                                                                             `${trade.tips?.trade_away && trade.tips?.trade_away?.find(p => p.player_id === player_id)?.manager.user_id === rid
 
                                                                                 ? 'red'
                                                                                 : ''
                                                                             }`
                                                                         }>+ {allPlayers[player_id]?.full_name}</span></p></td>
-                                                                        <td className='value'>
+                                                                        <td className='value'
+                                                                            colSpan={4}>
                                                                             {value}
                                                                         </td>
                                                                         <td
                                                                             className={trend > 0 ? 'green stat value' : trend < 0 ? 'red stat value' : 'stat value'}
                                                                             style={getTrendColor(trend, 1)}
+                                                                            colSpan={3}
                                                                         >
                                                                             {
                                                                                 trend > 0 ? '+' : ''
@@ -290,7 +292,7 @@ const Trades = ({
                                                                         const trend = cur_values?.[ktc_name] && trans_values?.[ktc_name] && ((cur_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'])).toString() || '-'
                                                                         return <tr>
                                                                             <td
-                                                                                colSpan={4}
+                                                                                colSpan={11}
                                                                                 className={`${trade.tips?.trade_away && trade.tips?.trade_away
                                                                                     ?.find(p =>
                                                                                         p?.player_id?.season === pick.season
@@ -302,14 +304,16 @@ const Trades = ({
                                                                                     <p><span>{`+ ${pick.season} Round ${pick.round}${pick.order && pick.season === stateState.league_season ? `.${pick.order.toLocaleString("en-US", { minimumIntegerDigits: 2 })}` : ` (${pick.original_user?.username || 'Orphan'})`}`}</span></p>
                                                                                 }
                                                                             </td>
-                                                                            <td className='value'>
+                                                                            <td className='value' colSpan={4}>
                                                                                 {
                                                                                     value
                                                                                 }
                                                                             </td>
                                                                             <td
                                                                                 className={trend > 0 ? 'green stat value' : trend < 0 ? 'red stat value' : 'stat value'}
-                                                                                style={getTrendColor(trend, 1)}>
+                                                                                style={getTrendColor(trend, 1)}
+                                                                                colSpan={3}
+                                                                            >
                                                                                 {
                                                                                     cur_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[ktc_name]?.[superflex ? 'sf' : 'oneqb'] > 0 ? '+' : ''
                                                                                 }
@@ -320,7 +324,7 @@ const Trades = ({
                                                             }
                                                         </tbody>
                                                     </table>,
-                                                    colSpan: 4,
+                                                    colSpan: 5,
                                                     rowSpan: 2,
                                                     className: 'small'
                                                 },
@@ -378,7 +382,7 @@ const Trades = ({
                                                             }
                                                         </tbody>
                                                     </table>,
-                                                    colSpan: 3,
+                                                    colSpan: 4,
                                                     rowSpan: 2,
                                                     className: 'small'
                                                 }
