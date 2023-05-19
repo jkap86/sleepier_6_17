@@ -290,6 +290,7 @@ table.primary tbody tr td {
   background-image: radial-gradient(black -100%, var(--wr) 500%);
   height: 7rem;
   box-shadow: inset 0 0 1rem var(--color4);
+  text-align: center;
 }
 table.primary tbody tr td.stat {
   box-shadow: inset 0 0 1rem var(--color4);
@@ -424,7 +425,7 @@ table.primary table.secondary tbody tr.active2 td table.tertiary tbody tr.active
 }
 
 table#trades tr.primary table.trade_summary {
-  border: 0.5rem double var(--color2);
+  outline: 0.25rem ridge var(--wr);
 }
 table#trades tr.primary table.trade_summary td {
   background-image: radial-gradient(var(--wr) -150%, var(--color4) 100%);
@@ -458,9 +459,32 @@ table#trades tr.primary table.trade_summary table.trade_info td.value {
 table#trades tr.primary.active table.trade_summary td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
 }
+table#trades tr.primary.active table.trade_summary td table div.trade_manager div p.value,
+table#trades tr.primary.active table.trade_summary td table div.trade_manager div p.trend {
+  background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
+  box-shadow: inset 0 0 1rem var(--color2);
+}
+table#trades tr.primary.active table.trade_summary tr.trade_summary {
+  position: sticky;
+  top: 14rem;
+  z-index: 7;
+}
+table#trades tr.primary.active table.trade_summary tr.trade_summary:first-of-type {
+  position: sticky;
+  top: 7rem;
+  z-index: 9;
+}
 table#trades tr.primary.active table.trade_info td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
   box-shadow: inset 0 0 1rem var(--color2);
+}
+table#trades tr.primary.active2 > td {
+  background-image: none;
+}
+table#trades tr.primary.active2 table.secondary {
+  position: sticky;
+  top: 14rem;
+  z-index: 9;
 }
 
 /*# sourceMappingURL=tableMain.css.map */

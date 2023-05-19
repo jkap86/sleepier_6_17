@@ -85,7 +85,7 @@ const Trades = ({
             dispatch(fetchValues([...dates, new Date(new Date() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0]], null))
         }
 
-    }, [tradesDisplay, page])
+    }, [page])
 
 
     useEffect(() => {
@@ -100,7 +100,7 @@ const Trades = ({
         } else {
             setPage(1)
         }
-    }, [searched_player, searched_league, searched_manager, pricecheck_player, pricecheck_player2])
+    }, [searched_player, searched_league, searched_manager, pricecheck_player, pricecheck_player2, tab])
 
     useEffect(() => {
         if ((searched_player !== '' || searched_manager !== '') && !searches.find(s => s.player === searched_player.id && s.manager === searched_manager.id)) {
@@ -254,17 +254,14 @@ const Trades = ({
                                                                 Object.keys(trade.adds || {}).filter(a => trade.adds[a] === roster?.user_id).map(player_id => {
                                                                     const value = trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] || '-'
                                                                     const trend = cur_values?.[player_id] && trans_values?.[player_id] && (cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'])
-                                                                    return <tr
-                                                                        className={
+                                                                    return <tr>
+                                                                        <td colSpan={4} className='left' ><p><span className={
                                                                             `${trade.tips?.trade_away && trade.tips?.trade_away?.find(p => p.player_id === player_id)?.manager.user_id === rid
 
                                                                                 ? 'red'
                                                                                 : ''
                                                                             }`
-                                                                        }
-
-                                                                    >
-                                                                        <td colSpan={4} className='left'><p><span>+ {allPlayers[player_id]?.full_name}</span></p></td>
+                                                                        }>+ {allPlayers[player_id]?.full_name}</span></p></td>
                                                                         <td className='value'>
                                                                             {value}
                                                                         </td>
