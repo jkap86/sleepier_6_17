@@ -61,12 +61,14 @@ export const fetchLeagues = (user_id) => {
                 axios.post('/league/find', { user_id: user_id }),
             ]);
 
+            console.log(home.data)
 
             dispatch({
                 type: 'FETCH_LEAGUES_SUCCESS', payload: {
                     state: home.data.state,
                     allPlayers: home.data.allplayers,
                     schedule: home.data.schedule,
+                    projections: home.data.projections,
                     leagues: leagues.data
                         .filter(league => league.rosters
                             ?.find(r => r.user_id === user_id || r.co_owners?.find(co => co?.user_id === user_id))
@@ -270,4 +272,9 @@ export const fetchPriceCheckTrades = (pricecheck_player, pricecheck_player2, off
 export const uploadRankings = (uploadedRankings) => ({
     type: 'UPLOAD_RANKINGS',
     payload: uploadedRankings
+})
+
+export const updateSleeperRankings = (updatedRankings) => ({
+    type: 'UPDATE_SLEEPER_RANKINGS',
+    payload: updatedRankings
 })

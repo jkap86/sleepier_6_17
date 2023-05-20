@@ -13,6 +13,8 @@ div.trend-range {
   background-color: var(--color3);
   filter: contrast(2);
   box-shadow: 0 0 1rem white, inset 0 0 2rem var(--color4);
+  display: flex;
+  align-items: center;
 }
 div.trend-range label.sort {
   display: inline-flex;
@@ -332,7 +334,7 @@ table.primary tbody tr td.stat p.stat > p,
 table.primary tbody tr td.stat span.player_score > p {
   position: absolute;
   display: flex;
-  top: -100%;
+  right: 100%;
   align-items: center;
   height: 100%;
   bottom: 0;

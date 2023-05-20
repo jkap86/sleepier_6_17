@@ -9,5 +9,13 @@ module.exports = app => {
         leagues.find(req, res, app)
     });
 
+    router.post('/sync', (req, res) => {
+        leagues.sync(req, res, app)
+    })
+
+    router.post("/draft", async (req, res) => {
+        leagues.picktracker(req, res, app)
+    })
+
     app.use('/league', router);
 }

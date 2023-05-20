@@ -2,22 +2,25 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import axios from 'axios';
 import TableMain from '../Home/tableMain';
+import { avatar, loadingIcon } from "../../functions/misc";
 
 
 const PickTracker = ({ }) => {
     const params = useParams();
     const [kickers, setKickers] = useState([])
     const [page, setPage] = useState(1)
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
 
         const fetchKickers = async () => {
+            setIsLoading(true)
             const kickers = await axios.post('/league/draft', {
                 league_id: params.league_id
 
             })
             setKickers(kickers.data)
-
+            setIsLoading(false)
         }
 
         fetchKickers()
@@ -75,17 +78,18 @@ const PickTracker = ({ }) => {
         })
 
 
-    return <>
+    return isLoading ? loadingIcon : <>
         <Link to={'/'} className='home' target={'_blank'}>
             Home
         </Link>
         <h1>
             <p className="image">
+                {avatar(kickers.league?.avatar, 'league avatar', 'league')}
                 <strong>{kickers.league?.name}</strong>
             </p>
         </h1>
         <TableMain
-            type={'main'}
+            type={'primary'}
             headers={headers}
             body={body}
             page={page}

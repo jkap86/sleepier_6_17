@@ -8,11 +8,12 @@ module.exports = app => {
         const state = app.get('state')
         const allplayers = app.get('allplayers')
         const schedule = app.get('schedule')
-
+        const projections = app.get('projections')
         res.send({
             state: state,
             allplayers: allplayers,
-            schedule: schedule
+            schedule: schedule,
+            projections: projections
         })
     })
 

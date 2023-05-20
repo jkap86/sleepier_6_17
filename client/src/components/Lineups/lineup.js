@@ -12,10 +12,8 @@ const Lineup = ({
     league,
     optimal_lineup,
     stateAllPlayers,
-    state_user,
     lineup_check,
     players_points,
-    uploadedRankings,
     stateState,
     stateNflSchedule
 }) => {
@@ -23,11 +21,12 @@ const Lineup = ({
     const [itemActive, setItemActive] = useState(null);
     const [syncing, setSyncing] = useState(false)
     const [secondaryContent, setSecondaryContent] = useState('Optimal')
-    const { rankings, notMatched, filename, error } = useSelector(state => state.lineups)
+    const { rankings: uploadedRankings } = useSelector(state => state.lineups)
+    const { projections } = useSelector(state => state.leagues)
 
     const active_player = lineup_check?.find(x => `${x.slot}_${x.index}` === itemActive)?.current_player
 
-
+    const rankings = uploadedRankings || projections
 
     useEffect(() => {
         if (itemActive) {
@@ -123,7 +122,7 @@ const Lineup = ({
                     className: color
                 },
                 {
-                    text: rankings[slot.current_player]?.prevRank || 999,
+                    text: rankings && rankings[slot.current_player]?.prevRank || projections && projections[slot.current_player] || 999,
                     colSpan: 3,
                     className: color
                 },
@@ -306,7 +305,7 @@ const Lineup = ({
                             className: 'green'
                         },
                         {
-                            text: rankings[ol.player]?.prevRank || 999,
+                            text: rankings && rankings[ol.player]?.prevRank || projections && projections[ol.player]?.prevRank || 999,
                             colSpan: 3,
                             className: 'green'
                         },

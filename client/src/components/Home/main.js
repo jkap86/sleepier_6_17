@@ -17,7 +17,7 @@ const Main = () => {
     const { isLoadingUser, errorUser, type1, type2, tab, user } = useSelector((state) => state.user);
     const { isLoadingLeagues, state, leagues } = useSelector(state => state.leagues);
     const { isLoading: isLoadingLmTrades } = useSelector(state => state.lmTrades);
-    const { filteredData } = useSelector(state => state.filteredData);
+    const { isLoadingData } = useSelector(state => state.filteredData);
 
     useEffect(() => {
         dispatch(fetchUser(params.username));
@@ -48,25 +48,25 @@ const Main = () => {
 
     switch (tab) {
         case 'Players':
-            display = <Players />
+            display = !isLoadingData && <Players /> || loadingIcon
             break;
         case 'Trades':
-            display = <Trades />
+            display = !isLoadingLmTrades && <Trades /> || loadingIcon
             break;
         case 'Leagues':
-            display = <Leagues />
+            display = !isLoadingData && <Leagues /> || loadingIcon
             break;
         case 'Leaguemates':
-            display = <Leaguemates />
+            display = !isLoadingData && <Leaguemates /> || loadingIcon
             break;
         case 'Lineups':
-            display = <Lineups />
+            display = !isLoadingData && <Lineups /> || loadingIcon
             break;
         default:
             break;
     }
 
-    console.log({ isLoadingLmTrades: isLoadingLmTrades })
+
     return <>
         {
             (isLoadingUser || isLoadingLeagues) ? loadingIcon

@@ -1,7 +1,7 @@
 import { RESET_STATE } from '../actions/actions';
 
 const initialState = {
-    rankings: {},
+    rankings: null,
     notMatched: [],
     filename: '',
     error: null

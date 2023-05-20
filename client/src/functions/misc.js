@@ -3,6 +3,8 @@ import league_avatar from '../images/league_avatar.png';
 import player_avatar from '../images/headshot.png';
 import sleeperlogo from '../images/sleeper_icon.png';
 
+
+
 export const avatar = (avatar_id, alt, type) => {
     let source;
     let onError = null
@@ -144,4 +146,64 @@ export const matchTeam = (team) => {
         NOS: 'NO'
     }
     return team_abbrev[team] || team
+}
+
+export const ppr_scoring_settings = {
+    'pass_yd': 0.03999999910593033,
+    'pass_td': 4,
+    'pass_2pt': 2,
+    'pass_int': -1,
+    'rush_yd': 0.10000000149011612,
+    'rush_2pt': 2,
+    'rush_td': 6,
+    'rec': 1,
+    'rec_yd': 0.10000000149011612,
+    'rec_2pt': 2,
+    'rec_td': 6,
+    'fum_lost': -2
+}
+
+export const getPlayerBreakdown = (
+    player_id,
+    trend_games,
+    tooltipVisible,
+    setTooltipVisible,
+    setPlayerModalVisible,
+    allPlayers,
+    value
+) => {
+
+    return <span
+        className="player_score"
+        //onClick={() => setItemActive()}
+        onMouseEnter={
+            trend_games?.length > 0
+                ? (e) => {
+                    setTooltipVisible(player_id)
+                }
+                : null
+        }
+
+        onMouseLeave={() => {
+            setTooltipVisible(false)
+        }}
+
+    >
+        {
+            tooltipVisible === player_id
+                ? <p onClick={
+                    () => setPlayerModalVisible({
+                        ...allPlayers[player_id],
+                        trend_games: trend_games,
+                        scoring_settings: ppr_scoring_settings
+                    })
+                }>
+                    Breakdown
+                </p>
+                : null
+        }
+        {
+            value
+        }
+    </span>
 }

@@ -236,7 +236,7 @@ const Trades = ({
                                                             </p>
                                                         </div>
                                                         <div>
-                                                            <p>
+                                                            <p className='left'>
                                                                 {
                                                                     avatar(
                                                                         roster?.avatar, 'user avatar', 'user'

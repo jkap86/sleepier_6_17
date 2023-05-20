@@ -3,6 +3,7 @@ import { useState } from "react";
 //  import LeagueInfo from "../Leagues/leagueInfo";
 import { useSelector } from 'react-redux';
 import LeagueInfo from "../Leagues/leagueInfo";
+import { getPlayerBreakdown } from "../../functions/misc";
 
 const PlayerLeagues = ({
     leagues_owned,
@@ -13,7 +14,10 @@ const PlayerLeagues = ({
     snapPercentageMax,
     getPlayerScore,
     setPlayerModalVisible,
-    player_id
+    player_id,
+    allPlayers,
+    tooltipVisible,
+    setTooltipVisible
 }) => {
     const [tab, setTab] = useState('Owned');
     const [page, setPage] = useState(1)
@@ -75,16 +79,20 @@ const PlayerLeagues = ({
                     }
                 },
                 {
-                    text: <span onClick={(e) => {
-                        e.stopPropagation()
-                        setPlayerModalVisible({
-                            ...stateAllPlayers[player_id],
-                            trend_games: trend_games,
-                            scoring_settings: lo.scoring_settings
-                        })
-                    }}>
-                        {trend_games?.length > 0 && (Object.keys(player_score || {}).reduce((acc, cur) => acc + player_score[cur].points, 0) / trend_games.length).toFixed(1) || '-'}
-                    </span>,
+                    text: getPlayerBreakdown(
+                        lo.league_id,
+                        trend_games,
+                        tooltipVisible,
+                        setTooltipVisible,
+                        setPlayerModalVisible,
+                        allPlayers,
+                        trend_games?.length > 0
+                        && (Object.keys(player_score || {})
+                            .reduce(
+                                (acc, cur) => acc + player_score[cur].points, 0) / trend_games.length)
+                            .toFixed(1)
+                        || '-'
+                    ),
                     colSpan: 1
                 },
                 {

@@ -6,7 +6,7 @@ import { getNewRank } from "../../functions/getNewRank";
 import { utils, writeFile } from 'xlsx';
 import { positionFilterIcon, teamFilterIcon } from "../../functions/filterIcons";
 import { useSelector, useDispatch } from 'react-redux';
-import { uploadRankings } from "../../actions/actions";
+import { uploadRankings, updateSleeperRankings } from "../../actions/actions";
 
 const WeeklyRankings = ({
     tab,
@@ -21,6 +21,7 @@ const WeeklyRankings = ({
     const [filterPosition, setFilterPosition] = useState('W/R/T/Q')
     const [filterTeam, setFilterTeam] = useState('All')
     const tooltipRef = useRef(null)
+    const { projections } = useSelector(state => state.leagues)
     const { rankings, notMatched, filename, error } = useSelector(state => state.lineups)
 
     console.log(stateNflSchedule)
@@ -87,7 +88,7 @@ const WeeklyRankings = ({
         ]
     ]
 
-    const weekly_rankings_body = Object.keys(rankings || {})
+    const weekly_rankings_body = (rankings && Object.keys(rankings) || Object.keys(projections || {}))
         ?.filter(x => (
             filterPosition === stateAllPlayers[x]?.position
             || filterPosition.split('/').includes(stateAllPlayers[x]?.position?.slice(0, 1))
@@ -95,7 +96,7 @@ const WeeklyRankings = ({
                 filterTeam === 'All' || filterTeam === stateAllPlayers[x]?.team
             )
         )
-        ?.sort((a, b) => rankings[a].prevRank - rankings[b].prevRank)
+        ?.sort((a, b) => rankings && rankings[a].prevRank - rankings[b].prevRank || projections && projections[a].prevRank - projections[b].prevRank)
         ?.map(player_id => {
             const offset = new Date().getTimezoneOffset()
             const kickoff = stateNflSchedule[stateState.display_week]
@@ -146,12 +147,12 @@ const WeeklyRankings = ({
                         colSpan: 2
                     },
                     {
-                        text: rankings[player_id].prevRank,
+                        text: rankings && rankings[player_id].prevRank || projections[player_id].prevRank,
                         colSpan: 1
                     },
                     edit && {
                         text: <input
-                            value={rankings[player_id].newRank}
+                            value={rankings && rankings[player_id].newRank || projections && projections[player_id].newRank}
                             className={'editRank'}
                             onChange={(e) => handleRankChange([{ rank: e.target.value, player_id: player_id }])}
                         />,
@@ -163,7 +164,7 @@ const WeeklyRankings = ({
 
     const handleRankChange = (players_to_update) => {
 
-        let r = rankings
+        let r = rankings || projections
 
         players_to_update.map(player_to_update => {
             const prevRank = r[player_to_update.player_id].newRank
@@ -186,9 +187,11 @@ const WeeklyRankings = ({
                 })
 
         })
-        dispatch(uploadRankings({
-            rankings: r
-        }))
+        rankings
+            && dispatch(uploadRankings({
+                rankings: r
+            }))
+            || dispatch(updateSleeperRankings(r))
 
     }
 
@@ -261,18 +264,7 @@ const WeeklyRankings = ({
         </div>
         <h1>
             Week {stateState.display_week}
-            <label className='upload'>
-                <i
-                    className={'fa fa-upload click right'}
-                >
-                </i>
-                <input
-                    type={'file'}
-                    onChange={(e) => importRankings(e, stateAllPlayers, (uploadedRankings) => {
-                        dispatch(uploadRankings(uploadedRankings))
-                    })}
-                />
-            </label>
+
         </h1>
         <h1>
             {
@@ -280,7 +272,22 @@ const WeeklyRankings = ({
                     <i
                         onClick={() => downloadFile()}
                         className="fa-solid fa-download click"></i>
-                    : null
+                    :
+                    <>
+                        Sleeper Rankings From Projections
+                        <label className='upload'>
+                            <i
+                                className={'fa fa-upload click right'}
+                            >
+                            </i>
+                            <input
+                                type={'file'}
+                                onChange={(e) => importRankings(e, stateAllPlayers, (uploadedRankings) => {
+                                    dispatch(uploadRankings(uploadedRankings))
+                                })}
+                            />
+                        </label>
+                    </>
             }
             {filename}
             {

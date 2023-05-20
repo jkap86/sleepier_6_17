@@ -130,3 +130,34 @@ div.heading {
 
 
 }
+
+p.image {
+    position: relative;
+    line-height: 15rem;
+
+    img {
+        border-radius: 50%;
+        width: 15rem;
+        height: 15rem;
+        margin: auto;
+        position: absolute;
+        margin: auto;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 0;
+        opacity: .85;
+        box-shadow: 0 0 1rem white;
+        opacity: .5;
+    }
+
+    strong {
+        position: relative;
+        z-index: 2;
+        font-size: 7rem;
+        text-shadow: 0 0 3rem black;
+        font-family: 'Pulang', sans-serif;
+        color: var(--color2);
+    }
+}

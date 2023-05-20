@@ -7,7 +7,7 @@ import headshot from '../../images/headshot.png';
 import { getLocalDate } from '../../functions/dates';
 import { fetchStats, fetchValues, setTrendDateStart, setTrendDateEnd } from '../../actions/actions';
 import '../css/players.css';
-import { loadingIcon } from "../../functions/misc";
+import { loadingIcon, getPlayerBreakdown } from "../../functions/misc";
 import { draftClassFilterIcon, positionFilterIcon, teamFilterIcon } from "../../functions/filterIcons";
 
 const Players = ({ }) => {
@@ -153,20 +153,7 @@ const Players = ({ }) => {
         )
     )
 
-    const ppr_scoring_settings = {
-        'pass_yd': 0.03999999910593033,
-        'pass_td': 4,
-        'pass_2pt': 2,
-        'pass_int': -1,
-        'rush_yd': 0.10000000149011612,
-        'rush_2pt': 2,
-        'rush_td': 6,
-        'rec': 1,
-        'rec_yd': 0.10000000149011612,
-        'rec_2pt': 2,
-        'rec_td': 6,
-        'fum_lost': -2
-    }
+
 
 
     const category_dropdown = (statType, setStatType) => {
@@ -423,37 +410,19 @@ const Players = ({ }) => {
 
                     },
                     {
-                        text: <span
-                            className="player_score"
-                            //onClick={() => setItemActive()}
-                            onMouseEnter={(e) => {
-                                setTooltipVisible(player.id)
-                            }}
-
-                            onMouseLeave={() => {
-                                setTooltipVisible(false)
-                            }}
-
-                        >
-                            {
-                                tooltipVisible === player.id
-                                    ? <p onClick={
-                                        () => setPlayerModalVisible({
-                                            ...allPlayers[player.id],
-                                            trend_games: trend_games,
-                                            scoring_settings: ppr_scoring_settings
-                                        })
-                                    }>
-                                        Breakdown
-                                    </p>
-                                    : null
-                            }
-                            {
+                        text: getPlayerBreakdown(
+                            player.id,
+                            trend_games,
+                            tooltipVisible,
+                            setTooltipVisible,
+                            setPlayerModalVisible,
+                            allPlayers,
+                            (
                                 trend_games?.length > 0
                                 && (trend_games?.reduce((acc, cur) => acc + cur.stats.pts_ppr, 0) / trend_games?.length)?.toFixed(1)
                                 || '-'
-                            }
-                        </span>,
+                            )
+                        ),
                         colSpan: 2,
                         className: "stat"
 
@@ -477,7 +446,8 @@ const Players = ({ }) => {
                         allPlayers={allPlayers}
                         getPlayerScore={getPlayerScore}
                         setPlayerModalVisible={setPlayerModalVisible}
-
+                        tooltipVisible={tooltipVisible}
+                        setTooltipVisible={setTooltipVisible}
                     />
                 )
             }

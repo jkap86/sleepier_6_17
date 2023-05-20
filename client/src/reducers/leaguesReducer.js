@@ -7,6 +7,7 @@ const initialState = {
     state: {},
     allPlayers: {},
     nflSchedule: {},
+    projections: [],
     leagues: [],
     errorLeagues: null
 };
@@ -17,12 +18,24 @@ const leaguesReducer = (state = initialState, action) => {
         case 'FETCH_LEAGUES_START':
             return { ...state, isLoadingLeagues: true, errorLeagues: null };
         case 'FETCH_LEAGUES_SUCCESS':
+            const projections = {}
+
+            action.payload.projections
+                .sort((a, b) => b.stats.pts_ppr - a.stats.pts_ppr)
+                .map((proj, index) => {
+                    projections[proj.player_id] = {
+                        prevRank: index + 1,
+                        newRank: index + 1
+                    }
+                })
+
             return {
                 ...state,
                 state: action.payload.state,
                 allPlayers: action.payload.allPlayers,
                 nflSchedule: action.payload.schedule,
                 leagues: action.payload.leagues,
+                projections: projections,
                 isLoadingLeagues: false
             };
         case 'FETCH_LEAGUES_FAILURE':
@@ -46,6 +59,8 @@ const leaguesReducer = (state = initialState, action) => {
             }
         case 'SYNC_LEAGUES_FAILURE':
             return { ...state, syncing: false, errorSyncing: action.payload }
+        case 'UPDATE_SLEEPER_RANKINGS':
+            return { ...state, projections: action.payload }
         case RESET_STATE:
             return {
                 ...initialState

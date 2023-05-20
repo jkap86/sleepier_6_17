@@ -13,9 +13,10 @@ const LineupCheck = ({
     const [page, setPage] = useState(1)
     const [searched, setSearched] = useState('')
     const { user: state_user } = useSelector(state => state.user)
-    const { allPlayers: stateAllPlayers, state: stateState, nflSchedule: stateNflSchedule } = useSelector(state => state.leagues)
+    const { allPlayers: stateAllPlayers, state: stateState, nflSchedule: stateNflSchedule, projections } = useSelector(state => state.leagues)
     const { filteredData: stateLeagues } = useSelector(state => state.filteredData)
-    const { rankings, notMatched, filename, error } = useSelector(state => state.lineups)
+    const { rankings } = useSelector(state => state.lineups)
+
 
 
     const lineups_headers = [
@@ -74,7 +75,7 @@ const LineupCheck = ({
 
 
         }
-        let lineups = matchup && rankings && getLineupCheck(matchup, league, stateAllPlayers, rankings, stateNflSchedule[stateState.display_week])
+        let lineups = matchup && getLineupCheck(matchup, league, stateAllPlayers, (rankings || projections), stateNflSchedule[stateState.display_week])
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
         const starting_slots = lineups?.starting_slots
