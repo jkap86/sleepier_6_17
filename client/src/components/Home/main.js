@@ -9,6 +9,7 @@ import Players from "../Players/players";
 import Trades from '../Trades/trades';
 import Leagues from "../Leagues/leagues";
 import Leaguemates from "../Leaguemates/leaguemates";
+import Lineups from "../Lineups/lineups";
 
 const Main = () => {
     const params = useParams();
@@ -57,6 +58,9 @@ const Main = () => {
             break;
         case 'Leaguemates':
             display = <Leaguemates />
+            break;
+        case 'Lineups':
+            display = <Lineups />
             break;
         default:
             break;

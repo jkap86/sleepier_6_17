@@ -3,7 +3,24 @@ import { avatar } from '../../functions/misc';
 import { useEffect, useRef } from 'react';
 import Search from './search';
 
-const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItemActive, caption, search, searched, setSearched, options1, options2, partial, loadMore }) => {
+const TableMain = ({
+    id,
+    type,
+    headers,
+    body,
+    page,
+    setPage,
+    itemActive,
+    setItemActive,
+    caption,
+    search,
+    searched,
+    setSearched,
+    options1,
+    options2,
+    partial,
+    loadMore
+}) => {
     const pageRef = useRef(null)
     const searchRef = useRef(null)
 
@@ -160,7 +177,7 @@ const TableMain = ({ id, type, headers, body, page, setPage, itemActive, setItem
                                                 <tbody>
                                                     <tr
                                                         className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
-                                                        onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
+                                                        onClickCapture={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
                                                     >
                                                         {
                                                             item.list

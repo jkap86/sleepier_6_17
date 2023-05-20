@@ -7,6 +7,7 @@ import statsReducer from './statsReducer';
 import lmTradesReducer from './lmTradesReducer';
 import filteredLmTradesReducer from './filteredLmTradesReducer';
 import pricecheckTradesReducer from './pricecheckTradesReducer';
+import lineupsReducer from './lineupsReducer';
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     lmTrades: lmTradesReducer,
     filteredLmTrades: filteredLmTradesReducer,
     pricecheckTrades: pricecheckTradesReducer,
+    lineups: lineupsReducer
 });
 
 export default rootReducer;

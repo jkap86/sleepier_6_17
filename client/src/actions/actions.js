@@ -266,3 +266,8 @@ export const fetchPriceCheckTrades = (pricecheck_player, pricecheck_player2, off
     }
 
 };
+
+export const uploadRankings = (uploadedRankings) => ({
+    type: 'UPLOAD_RANKINGS',
+    payload: uploadedRankings
+})

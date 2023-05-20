@@ -1,6 +1,7 @@
 import TableMain from "../Home/tableMain";
 import { memo, useState, useEffect } from "react"
 import LeaguematePlayersLeagues from "./leaguematePlayersLeagues"
+import TradeTipRosters from "../Trades/tradeTipRosters";
 import { useSelector } from 'react-redux';
 
 
@@ -156,7 +157,14 @@ const LeaguemateLeagues = ({ leaguemate }) => {
                         lm_league.userRoster.rank / lm_league.rosters.length >= .75 ? 'red' :
                             null
                 }
-            ]
+            ],
+            secondary_table: (
+                <TradeTipRosters
+                    userRoster={lm_league.userRoster}
+                    lmRoster={lm_league.lmRoster}
+                    roster_positions={lm_league.roster_positions}
+                />
+            )
         }
     })
 

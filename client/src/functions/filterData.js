@@ -134,6 +134,9 @@ export const filterData = (leagues, type1, type2, tab, season) => {
 
             filteredData = Object.values(lm_dict)
             break;
+        case 'Lineups':
+            filteredData = filteredLeagues2
+            break;
         default:
             break;
     }

@@ -14,21 +14,25 @@ const TradeTargets = ({
         [
             {
                 text: 'Potential Acquisitions',
-                colSpan: 9
+                colSpan: 9,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Manager',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Player',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'League',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             }
 
         ]
@@ -93,21 +97,25 @@ const TradeTargets = ({
         [
             {
                 text: 'Potential Flips',
-                colSpan: 9
+                colSpan: 9,
+                className: 'half'
             }
         ],
         [
             {
                 text: 'Manager',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'Player',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             },
             {
                 text: 'League',
-                colSpan: 3
+                colSpan: 3,
+                className: 'half'
             }
 
         ]

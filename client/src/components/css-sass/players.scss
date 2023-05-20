@@ -86,8 +86,9 @@ span.team {
             font-size: 5rem;
             position: relative;
             z-index: 0;
-            color: var(--color2);
-
+            color: var(--wr);
+            filter: contrast(2);
+            text-shadow: 0 0 1rem black;
         }
 
         img.icon {
@@ -99,11 +100,11 @@ span.team {
         i.icon {
             font-size: 7rem;
             text-shadow: 0 0 1rem black;
-            color: blueviolet;
+            color: silver;
             position: absolute;
             z-index: 0;
             opacity: .5;
-            filter: contrast(2);
+
         }
 
         select.hidden_behind {

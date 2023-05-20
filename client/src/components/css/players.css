@@ -76,7 +76,9 @@ span.team label strong.draft-year {
   font-size: 5rem;
   position: relative;
   z-index: 0;
-  color: var(--color2);
+  color: var(--wr);
+  filter: contrast(2);
+  text-shadow: 0 0 1rem black;
 }
 span.team label img.icon {
   width: 7rem;
@@ -85,11 +87,10 @@ span.team label img.icon {
 span.team label i.icon {
   font-size: 7rem;
   text-shadow: 0 0 1rem black;
-  color: blueviolet;
+  color: silver;
   position: absolute;
   z-index: 0;
   opacity: 0.5;
-  filter: contrast(2);
 }
 span.team label select.hidden_behind {
   position: absolute;

@@ -1,16 +1,15 @@
 import { useState } from "react"
 import TableMain from "../Home/tableMain"
-
+import { useSelector } from "react-redux";
 
 const TradeTipRosters = ({
     userRoster,
     lmRoster,
-    stateAllPlayers,
-    roster_positions,
-    stateState
+    roster_positions
 }) => {
     const [filterUser, setFilterUser] = useState('All')
     const [filterLm, setFilterLm] = useState('All')
+    const { state: stateState, allPlayers: stateAllPlayers } = useSelector(state => state.leagues)
 
     console.log({
         userRoster: userRoster,
@@ -21,7 +20,8 @@ const TradeTipRosters = ({
             [
                 {
                     text: roster.username,
-                    colSpan: 17
+                    colSpan: 17,
+                    className: 'half'
                 },
                 {
                     text: <select onChange={(e) => setFilter(e.target.value)}>
@@ -32,22 +32,26 @@ const TradeTipRosters = ({
                         <option>TE</option>
                         <option>Picks</option>
                     </select>,
-                    colSpan: 5
+                    colSpan: 5,
+                    className: 'half'
                 }
             ],
             [
                 {
                     text: 'Slot',
-                    colSpan: 5
+                    colSpan: 5,
+                    className: 'half'
                 },
                 {
                     text: 'Player',
                     colSpan: 12,
+                    className: 'half'
 
                 },
                 {
                     text: 'Age',
-                    colSpan: 5
+                    colSpan: 5,
+                    className: 'half'
                 }
             ]
         ]

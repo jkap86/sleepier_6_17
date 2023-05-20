@@ -32,6 +32,7 @@ const Players = ({ }) => {
     const { dynastyValues } = useSelector(state => state.dynastyValues)
     const modalRef = useRef(null)
     const playerModalRef = useRef(null)
+    const [tooltipVisible, setTooltipVisible] = useState(false)
 
     useEffect(() => {
 
@@ -43,6 +44,52 @@ const Players = ({ }) => {
 
         }
     }, [trendDateStart, trendDateEnd, playersharesFiltered])
+
+    useEffect(() => {
+        if (modalRef.current) {
+            modalRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }
+    }, [optionsVisible])
+
+    useEffect(() => {
+        if (playerModalRef.current) {
+            playerModalRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }
+    }, [playerModalVisible])
+
+    useEffect(() => {
+        const handleExitModal = (ref, setState) => {
+            return (event) => {
+                if (!ref.current || !ref.current.contains(event.target)) {
+
+                    setState(false)
+                }
+            }
+        };
+
+        const handleExitFiltersModal = handleExitModal(modalRef, setOptionsVisible)
+        const handleExitPlayerModal = handleExitModal(playerModalRef, setPlayerModalVisible)
+
+        document.addEventListener('mousedown', handleExitFiltersModal)
+        document.addEventListener('touchstart', handleExitFiltersModal)
+
+        document.addEventListener('mousedown', handleExitPlayerModal)
+        document.addEventListener('touchstart', handleExitPlayerModal)
+
+        return () => {
+            document.removeEventListener('mousedown', handleExitFiltersModal);
+            document.removeEventListener('touchstart', handleExitFiltersModal);
+
+            document.removeEventListener('mousedown', handleExitPlayerModal);
+            document.removeEventListener('touchstart', handleExitPlayerModal);
+        };
+    }, [])
 
     const handleMaxMinChange = (type, value) => {
 
@@ -378,23 +425,29 @@ const Players = ({ }) => {
                     {
                         text: <span
                             className="player_score"
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                setPlayerModalVisible({
-                                    ...allPlayers[player.id],
-                                    trend_games: trend_games,
-                                    scoring_settings: ppr_scoring_settings
-                                })
+                            //onClick={() => setItemActive()}
+                            onMouseEnter={(e) => {
+                                setTooltipVisible(player.id)
                             }}
-                            onTouchStart={(e) => {
-                                e.stopPropagation()
-                                setPlayerModalVisible({
-                                    ...allPlayers[player.id],
-                                    trend_games: trend_games,
-                                    scoring_settings: ppr_scoring_settings
-                                })
+
+                            onMouseLeave={() => {
+                                setTooltipVisible(false)
                             }}
+
                         >
+                            {
+                                tooltipVisible === player.id
+                                    ? <p onClick={
+                                        () => setPlayerModalVisible({
+                                            ...allPlayers[player.id],
+                                            trend_games: trend_games,
+                                            scoring_settings: ppr_scoring_settings
+                                        })
+                                    }>
+                                        Breakdown
+                                    </p>
+                                    : null
+                            }
                             {
                                 trend_games?.length > 0
                                 && (trend_games?.reduce((acc, cur) => acc + cur.stats.pts_ppr, 0) / trend_games?.length)?.toFixed(1)
@@ -573,7 +626,7 @@ const Players = ({ }) => {
                 &nbsp;<label className="sort">
                     <i
                         className="fa-solid fa-filter fa-beat click"
-                        onClick={() => setOptionsVisible(prevState => !prevState)}
+                        onClick={async () => setOptionsVisible(true)}
                     >
                     </i>
                 </label>
@@ -592,6 +645,7 @@ const Players = ({ }) => {
                 setSearched={setSearched}
                 options1={[teamFilter]}
                 options2={[positionFilter, draftClassFilter]}
+
             />
         </>
 }

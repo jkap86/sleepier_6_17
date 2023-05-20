@@ -27,6 +27,7 @@ img.thumbnail {
     border-radius: 50%;
 }
 
+h1,
 h2 {
     font-size: 3rem;
     margin: 2rem auto;
@@ -118,6 +119,10 @@ p {
 
 ol li {
     list-style: none;
+}
+
+i {
+    color: var(--color2);
 }
 
 ::-webkit-scrollbar {
