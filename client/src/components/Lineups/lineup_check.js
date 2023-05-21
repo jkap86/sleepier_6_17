@@ -75,7 +75,7 @@ const LineupCheck = ({
 
 
         }
-        let lineups = matchup && getLineupCheck(matchup, league, stateAllPlayers, (rankings || projections), stateNflSchedule[stateState.display_week])
+        let lineups = matchup && getLineupCheck(matchup, league, stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week])
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
         const starting_slots = lineups?.starting_slots

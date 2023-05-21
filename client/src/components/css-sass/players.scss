@@ -38,6 +38,8 @@ div.modal {
             display: grid;
             grid-template-columns: 33% 33% 33%;
             padding-bottom: 5rem;
+            white-space: nowrap;
+
 
             input {
                 background-color: var(--color2);
@@ -49,6 +51,12 @@ div.modal {
 
             div.modal-grid-content.header {
                 grid-column: 1 / span 3;
+            }
+
+            div.modal-grid-content {
+                input[type=number] {
+                    width: 7rem;
+                }
             }
 
             div.modal-grid-content.one {

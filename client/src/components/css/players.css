@@ -37,6 +37,7 @@ div.modal div.modal-grid div.modal-grid-item {
   display: grid;
   grid-template-columns: 33% 33% 33%;
   padding-bottom: 5rem;
+  white-space: nowrap;
 }
 div.modal div.modal-grid div.modal-grid-item input {
   background-color: var(--color2);
@@ -46,6 +47,9 @@ div.modal div.modal-grid div.modal-grid-item input {
 }
 div.modal div.modal-grid div.modal-grid-item div.modal-grid-content.header {
   grid-column: 1/span 3;
+}
+div.modal div.modal-grid div.modal-grid-item div.modal-grid-content input[type=number] {
+  width: 7rem;
 }
 div.modal div.modal-grid div.modal-grid-item div.modal-grid-content.one {
   grid-column: 1/span 1;

@@ -1,9 +1,10 @@
 import TableMain from "../Home/tableMain";
 import { useState, useEffect } from "react";
 import tumbleweedgif from '../../images/tumbleweed.gif';
-import { matchTeam } from "../../functions/misc";
+import { getPlayerBreakdown, matchTeam } from "../../functions/misc";
 import { useSelector, useDispatch } from 'react-redux';
 import { syncLeague } from '../../actions/actions';
+import { getPlayerScore } from '../../functions/getPlayerScore';
 
 const Lineup = ({
     matchup,
@@ -76,7 +77,7 @@ const Lineup = ({
                 className: 'half'
             },
             {
-                text: 'Rank',
+                text: uploadedRankings ? 'Rank' : 'Proj',
                 colSpan: 3,
                 className: 'half'
             },
@@ -122,7 +123,9 @@ const Lineup = ({
                     className: color
                 },
                 {
-                    text: rankings && rankings[slot.current_player]?.prevRank || projections && projections[slot.current_player] || 999,
+                    text: uploadedRankings
+                        ? rankings[slot.current_player]?.prevRank || 999
+                        : getPlayerScore([projections[slot.current_player]], league.scoring_settings, true) || '-',
                     colSpan: 3,
                     className: color
                 },
@@ -233,7 +236,9 @@ const Lineup = ({
                                 className: color
                             },
                             {
-                                text: rankings[so]?.prevRank || 999,
+                                text: uploadedRankings
+                                    ? rankings[so]?.prevRank || 999
+                                    : getPlayerScore([projections[so]], league.scoring_settings, true) || '-',
                                 colSpan: 3,
                                 className: color
                             },
@@ -270,7 +275,9 @@ const Lineup = ({
                             colSpan: 3,
                         },
                         {
-                            text: rankings[opp_starter]?.prevRank || 999,
+                            text: uploadedRankings
+                                ? rankings[opp_starter]?.prevRank || 999
+                                : getPlayerScore([projections[opp_starter]], league.scoring_settings, true) || '-',
                             colSpan: 3
                         },
                         {
@@ -305,7 +312,9 @@ const Lineup = ({
                             className: 'green'
                         },
                         {
-                            text: rankings && rankings[ol.player]?.prevRank || projections && projections[ol.player]?.prevRank || 999,
+                            text: uploadedRankings
+                                ? rankings[ol.player]?.prevRank || 999
+                                : getPlayerScore([projections[ol.player]], league.scoring_settings, true) || '-',
                             colSpan: 3,
                             className: 'green'
                         },

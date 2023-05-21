@@ -24,6 +24,7 @@ const leaguesReducer = (state = initialState, action) => {
                 .sort((a, b) => b.stats.pts_ppr - a.stats.pts_ppr)
                 .map((proj, index) => {
                     projections[proj.player_id] = {
+                        ...proj,
                         prevRank: index + 1,
                         newRank: index + 1
                     }

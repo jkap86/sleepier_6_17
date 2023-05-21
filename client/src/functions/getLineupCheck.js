@@ -1,6 +1,7 @@
+import { getPlayerScore } from "./getPlayerScore"
 import { matchTeam } from "./misc"
 
-export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings, schedule) => {
+export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings, projections, schedule) => {
 
     const position_map = {
         'QB': ['QB'],
@@ -33,15 +34,17 @@ export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings,
             ?.find(matchup => matchup.team.find(t => matchTeam(t.id) === stateAllPlayers[player_id]?.team) || !stateAllPlayers[player_id]?.team)
         players.push({
             id: player_id,
-            rank: !playing
-                ? 1001
-                : weeklyRankings[player_id]?.prevRank
-                    ? matchup.starters?.includes(player_id)
-                        ? weeklyRankings[player_id]?.prevRank
-                        : weeklyRankings[player_id]?.prevRank + 1
-                    : matchup.starters?.includes(player_id)
-                        ? 999
-                        : 1000
+            rank: weeklyRankings
+                ? !playing
+                    ? 1001
+                    : weeklyRankings[player_id]?.prevRank
+                        ? matchup.starters?.includes(player_id)
+                            ? weeklyRankings[player_id]?.prevRank
+                            : weeklyRankings[player_id]?.prevRank + 1
+                        : matchup.starters?.includes(player_id)
+                            ? 999
+                            : 1000
+                : getPlayerScore([projections[player_id]], league.scoring_settings, true) || 0
         })
     })
 
@@ -51,7 +54,7 @@ export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings,
         starting_slots.map((slot, index) => {
             const slot_options = player_ranks_filtered
                 .filter(x => position_map[slot].includes(stateAllPlayers[x.id]?.position))
-                .sort((a, b) => a.rank - b.rank)
+                .sort((a, b) => weeklyRankings ? a.rank - b.rank : b.rank - a.rank)
 
             const optimal_player = slot_options[0]?.id
             player_ranks_filtered = player_ranks_filtered.filter(x => x.id !== optimal_player)
