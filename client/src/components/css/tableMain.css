@@ -340,7 +340,6 @@ table.primary thead tr th.small {
 table.primary tbody tr p.stat,
 table.primary tbody tr span.player_score {
   font-family: "Monomaniac One", sans-serif;
-  font-size: 2.5rem;
   width: 100%;
   height: 100%;
   display: flex;

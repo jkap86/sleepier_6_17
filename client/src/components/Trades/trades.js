@@ -257,13 +257,13 @@ const Trades = ({
                                                                     const value = trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] || '-'
                                                                     const trend = cur_values?.[player_id] && trans_values?.[player_id] && (cur_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'] - trans_values?.[player_id]?.[superflex ? 'sf' : 'oneqb'])
                                                                     return <tr>
-                                                                        <td colSpan={11} className='left' ><p><span className={
+                                                                        <td colSpan={11} className={
                                                                             `${trade.tips?.trade_away && trade.tips?.trade_away?.find(p => p.player_id === player_id)?.manager.user_id === rid
 
-                                                                                ? 'red'
-                                                                                : ''
+                                                                                ? 'red left'
+                                                                                : 'left'
                                                                             }`
-                                                                        }>+ {allPlayers[player_id]?.full_name}</span></p></td>
+                                                                        } ><p><span >+ {allPlayers[player_id]?.full_name}</span></p></td>
                                                                         <td className='value'
                                                                             colSpan={4}>
                                                                             {value}
