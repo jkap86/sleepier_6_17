@@ -3,12 +3,12 @@ div.modal {
     width: fit-content;
     height: fit-content;
     top: 0;
-    bottom: 0;
     left: 0;
     right: 0;
     margin: auto;
     z-index: 100;
     background-color: transparent;
+
 
     div.modal-grid {
         width: 80rem;
@@ -22,6 +22,7 @@ div.modal {
         border-radius: 5rem;
         box-shadow: 0 0 3rem white, inset 0 0 10rem black;
         border: 2rem ridge var(--te);
+        overflow: auto;
 
         button.close {
             position: absolute;
@@ -207,4 +208,8 @@ span.team {
             }
         }
     }
+}
+
+div.relative {
+    position: relative;
 }

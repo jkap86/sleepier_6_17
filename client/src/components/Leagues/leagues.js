@@ -27,7 +27,7 @@ const Leagues = ({ }) => {
         ]
     ]
 
-    const leagues_body = stateLeagues.filter(l => l.userRoster).map(league => {
+    const leagues_body = (stateLeagues || [])?.filter(l => l.userRoster)?.map(league => {
         const total_games = league.userRoster.settings.wins + league.userRoster.settings.losses + league.userRoster.settings.ties
         return {
             id: league.league_id,

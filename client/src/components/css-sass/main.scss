@@ -13,9 +13,9 @@ a.home {
     font-size: 3rem;
     display: block;
     width: fit-content;
-    text-align: left;
+
     padding: 2rem 0 0 2rem;
-    margin: 0;
+
 }
 
 img.thumbnail {
@@ -35,14 +35,16 @@ h2 {
 
 .green {
     color: greenyellow;
-
     text-shadow: 0 0 1.5rem black;
+    font-weight: 900;
 }
 
 .red,
 .fa-solid.fa-circle-exclamation {
     color: red;
     text-shadow: 0 0 1.5rem black;
+    font-weight: 900;
+
 }
 
 
@@ -64,6 +66,8 @@ h2 {
     overflow: hidden;
     text-overflow: ellipsis;
     max-width: fit-content;
+
+
 
 }
 

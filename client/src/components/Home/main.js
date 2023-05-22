@@ -2,7 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import React, { useEffect } from "react";
 import { loadingIcon } from "../../functions/misc";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchUser, fetchLeagues, fetchFilteredData, fetchLmTrades } from "../../actions/actions";
+import { resetState, fetchUser, fetchLeagues, fetchFilteredData, fetchLmTrades } from "../../actions/actions";
 import Heading from "./heading";
 import '../css/main.css';
 import Players from "../Players/players";
@@ -19,7 +19,9 @@ const Main = () => {
     const { isLoading: isLoadingLmTrades } = useSelector(state => state.lmTrades);
     const { isLoadingData } = useSelector(state => state.filteredData);
 
+
     useEffect(() => {
+        dispatch(resetState());
         dispatch(fetchUser(params.username));
     }, [params.username, dispatch])
 

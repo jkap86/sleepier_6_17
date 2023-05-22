@@ -40,17 +40,17 @@ const LineupCheck = ({
                 className: 'small half'
             },
             {
-                text: 'Early in Flex',
+                text: <p>Early in Flex</p>,
                 colSpan: 2,
                 className: 'small half'
             },
             {
-                text: 'Late not in Flex',
+                text: <p>Late not in Flex</p>,
                 colSpan: 2,
                 className: 'small half'
             },
             {
-                text: 'Non QBs in SF',
+                text: <p className="end">Non QBs in SF</p>,
                 colSpan: 2,
                 className: 'small half'
             }

@@ -148,7 +148,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
     const getLeagueDetails = async (league_id, display_week, new_league) => {
         const getDraftPicks = (traded_picks, rosters, users, drafts, league) => {
             let draft_season;
-            if (!drafts.find(x => x.status === 'pre_draft' && x.settings.rounds === league.settings.draft_rounds)) {
+            if (drafts.find(x => x.status === 'complete' && x.settings.rounds === league.settings.draft_rounds)) {
                 draft_season = parseInt(league.season) + 1
             } else {
                 draft_season = parseInt(league.season)

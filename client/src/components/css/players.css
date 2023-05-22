@@ -3,7 +3,6 @@ div.modal {
   width: fit-content;
   height: fit-content;
   top: 0;
-  bottom: 0;
   left: 0;
   right: 0;
   margin: auto;
@@ -22,6 +21,7 @@ div.modal div.modal-grid {
   border-radius: 5rem;
   box-shadow: 0 0 3rem white, inset 0 0 10rem black;
   border: 2rem ridge var(--te);
+  overflow: auto;
 }
 div.modal div.modal-grid button.close {
   position: absolute;
@@ -183,6 +183,10 @@ span.team label div.position_square3 div {
 }
 span.team label div.position_square4 div {
   flex-basis: 50%;
+}
+
+div.relative {
+  position: relative;
 }
 
 /*# sourceMappingURL=players.css.map */

@@ -4,7 +4,8 @@ import { avatar } from '../../functions/misc';
 const PlayerModal = ({
     getPlayerScore,
     setPlayerModalVisible,
-    player
+    player,
+    league
 }) => {
 
 
@@ -14,11 +15,15 @@ const PlayerModal = ({
 
 
         <div className="modal-grid" >
-            <button className="close" onClick={() => setPlayerModalVisible(false)}>X</button>
+            <button className="close" onClick={(e) => {
+                e.stopPropagation()
+                setPlayerModalVisible(false)
+            }}>X</button>
             <table className="modal">
                 <caption>{avatar(player?.player_id, 'player', 'player')}
                     <strong>
                         {player?.full_name}
+                        <br />{league?.name}
                     </strong></caption>
                 <thead>
                     <tr>

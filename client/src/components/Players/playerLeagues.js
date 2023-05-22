@@ -1,9 +1,10 @@
 import TableMain from "../Home/tableMain";
-import { useState } from "react";
+import { useState, useRef } from "react";
 //  import LeagueInfo from "../Leagues/leagueInfo";
 import { useSelector } from 'react-redux';
 import LeagueInfo from "../Leagues/leagueInfo";
 import { getPlayerBreakdown } from "../../functions/misc";
+import PlayerModal from "./playerModal";
 
 const PlayerLeagues = ({
     leagues_owned,
@@ -13,7 +14,6 @@ const PlayerLeagues = ({
     snapPercentageMin,
     snapPercentageMax,
     getPlayerScore,
-    setPlayerModalVisible,
     player_id,
     allPlayers,
     tooltipVisible,
@@ -24,8 +24,8 @@ const PlayerLeagues = ({
     const [itemActive, setItemActive] = useState('');
     const { allPlayers: stateAllPlayers } = useSelector(state => state.leagues)
     const { stats: stateStats } = useSelector(state => state.stats)
-
-
+    const [playerModalVisible2, setPlayerModalVisible2] = useState(false)
+    const playerModalRef = useRef(null)
 
     let player_leagues_headers = [
         [
@@ -84,14 +84,16 @@ const PlayerLeagues = ({
                         trend_games,
                         tooltipVisible,
                         setTooltipVisible,
-                        setPlayerModalVisible,
+                        setPlayerModalVisible2,
                         allPlayers,
                         trend_games?.length > 0
                         && (Object.keys(player_score || {})
                             .reduce(
                                 (acc, cur) => acc + player_score[cur].points, 0) / trend_games.length)
                             .toFixed(1)
-                        || '-'
+                        || '-',
+                        lo.scoring_settings,
+                        lo
                     ),
                     colSpan: 1
                 },
@@ -125,7 +127,7 @@ const PlayerLeagues = ({
                     getPlayerScore={getPlayerScore}
                     snapPercentageMin={snapPercentageMin}
                     snapPercentageMax={snapPercentageMax}
-                    setPlayerModalVisible={setPlayerModalVisible}
+                    setPlayerModalVisible2={setPlayerModalVisible2}
                     type='tertiary'
 
                 />
@@ -135,6 +137,7 @@ const PlayerLeagues = ({
 
 
     return <>
+
         <div className="secondary nav">
             <button
                 className={tab === 'Owned' ? 'active click' : 'click'}
@@ -155,15 +158,33 @@ const PlayerLeagues = ({
                 Available
             </button>
         </div>
-        <TableMain
-            type={'secondary'}
-            headers={player_leagues_headers}
-            body={player_leagues_body}
-            itemActive={itemActive}
-            setItemActive={setItemActive}
-            page={page}
-            setPage={setPage}
-        />
+        <div className="relative">
+            {
+                !playerModalVisible2 ?
+                    null
+                    :
+                    <div className="modal" ref={playerModalRef} >
+                        <PlayerModal
+                            setPlayerModalVisible={setPlayerModalVisible2}
+                            player={{
+                                ...allPlayers[player_id],
+                                ...playerModalVisible2
+                            }}
+                            getPlayerScore={getPlayerScore}
+                            league={playerModalVisible2?.league}
+                        />
+                    </div>
+            }
+            <TableMain
+                type={'secondary'}
+                headers={player_leagues_headers}
+                body={player_leagues_body}
+                itemActive={itemActive}
+                setItemActive={setItemActive}
+                page={page}
+                setPage={setPage}
+            />
+        </div>
     </>
 }
 

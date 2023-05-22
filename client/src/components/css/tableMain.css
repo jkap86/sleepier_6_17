@@ -7,7 +7,7 @@ div.trend-range {
   margin: auto;
   margin-bottom: 2rem;
   font-size: 3.5rem;
-  font-family: "GROUPE", sans-serif;
+  font-family: "Monomaniac One", sans-serif;
   height: 7rem;
   width: fit-content;
   background-color: var(--color3);
@@ -253,6 +253,32 @@ table.primary thead tr th {
   font-size: 3rem;
   white-space: nowrap;
 }
+table.primary thead tr th > p {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+table.primary thead tr th > p:hover {
+  overflow: visible;
+  width: fit-content;
+  position: relative;
+  z-index: 2;
+  background-color: black;
+  box-shadow: 0 0 1rem white;
+  padding-right: 2rem;
+}
+table.primary thead tr th > p.end:hover {
+  position: absolute;
+  width: fit-content;
+  direction: rtl;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding-left: 2rem;
+}
 table.primary thead tr th.half {
   height: 3.5rem;
   font-size: 2.5rem;
@@ -273,14 +299,14 @@ table.primary thead tr th label {
   font-family: "Pulang", sans-serif;
   margin: auto;
   width: 100%;
-  text-overflow: ellipsis;
-  overflow: hidden;
   text-align: center;
   color: var(--color2);
-  z-index: 2;
+  z-index: 1;
 }
 table.primary thead tr th label p {
   width: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 table.primary thead tr th label select.hidden_behind {
   color: transparent;
@@ -306,23 +332,15 @@ table.primary thead tr label:hover {
   background-color: black;
   min-width: fit-content;
   box-shadow: 0 0 2rem var(--wr);
+  z-index: 2;
 }
 table.primary thead tr th.small {
   font-size: 2.5rem;
 }
-table.primary tbody tr td {
-  background-image: radial-gradient(black -100%, var(--wr) 500%);
-  height: 7rem;
-  box-shadow: inset 0 0 1rem var(--color4);
-  text-align: center;
-}
-table.primary tbody tr td.stat {
-  box-shadow: inset 0 0 1rem var(--color4);
-}
-table.primary tbody tr td.stat p.stat,
-table.primary tbody tr td.stat span.player_score {
-  font-family: "GROUPE", sans-serif;
-  font-size: 85%;
+table.primary tbody tr p.stat,
+table.primary tbody tr span.player_score {
+  font-family: "Monomaniac One", sans-serif;
+  font-size: 2.5rem;
   width: 100%;
   height: 100%;
   display: flex;
@@ -330,11 +348,11 @@ table.primary tbody tr td.stat span.player_score {
   align-items: center;
   position: relative;
 }
-table.primary tbody tr td.stat p.stat > p,
-table.primary tbody tr td.stat span.player_score > p {
+table.primary tbody tr p.stat > p,
+table.primary tbody tr span.player_score > p {
   position: absolute;
   display: flex;
-  right: 100%;
+  top: 100%;
   align-items: center;
   height: 100%;
   bottom: 0;
@@ -346,6 +364,20 @@ table.primary tbody tr td.stat span.player_score > p {
   border-radius: 3rem;
   padding: 0 1rem;
   z-index: 101;
+}
+table.primary tbody tr td {
+  background-image: radial-gradient(black -100%, var(--wr) 500%);
+  height: 7rem;
+  box-shadow: inset 0 0 1rem var(--color4);
+  text-align: center;
+  text-shadow: 0 0 2.5rem black;
+}
+table.primary tbody tr td.stat {
+  box-shadow: inset 0 0 1rem var(--color4);
+}
+table.primary tbody tr td.stat .red,
+table.primary tbody tr td.stat .green {
+  font-weight: inherit;
 }
 table.primary tbody tr td.left {
   text-align: left;
@@ -367,6 +399,13 @@ table.primary tbody tr.active {
 }
 table.primary tbody tr.active td {
   background-image: radial-gradient(var(--color4) -100%, var(--color2) 250%);
+}
+table.primary tbody tr.active2 td table.secondary {
+  box-shadow: 0 0 1rem white;
+}
+table.primary tbody tr.active2 td table.secondary.lineup_body,
+table.primary tbody tr.active2 td table.secondary.subs_body {
+  box-shadow: initial;
 }
 table.primary tbody tr.active2 td div.secondary.nav {
   width: 100%;
@@ -534,18 +573,18 @@ table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-ty
 table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-type p.value,
 table#trades tr.primary table.trade_summary td div.trade_manager div:first-of-type p.trend {
   width: fit-content;
-  font-family: "GROUPE", sans-serif;
+  font-family: "Monomaniac One", sans-serif;
   filter: contrast(1.25);
   background-image: radial-gradient(var(--wr) -250%, var(--color4) 100%);
   padding: 1rem;
-  font-size: 2rem;
+  font-size: 2.5rem;
 }
 table#trades tr.primary table.trade_summary table.trade_info td {
   font-size: 2.5rem;
 }
 table#trades tr.primary table.trade_summary table.trade_info td.value {
-  font-family: "GROUPE", sans-serif;
-  font-size: 2rem;
+  font-family: "Monomaniac One", sans-serif;
+  font-size: 2.5rem;
   filter: contrast(1.5);
 }
 table#trades tr.primary.active {

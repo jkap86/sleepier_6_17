@@ -217,14 +217,14 @@ const Trades = ({
                                                     text: <div className='trade_manager'>
                                                         <div>
                                                             <p className='value'>
-                                                                KTC:
+                                                                KTC -&nbsp;
                                                                 {
                                                                     trans_value.toLocaleString("en-US")
                                                                 }
                                                             </p>
                                                             <p
                                                                 className={(trend > 0 ? 'green trend' : trend < 0 ? 'red trend' : 'trend')}
-                                                                style={getTrendColor(trend, 1)}
+                                                                style={getTrendColor(trend, 1.5)}
                                                             >
                                                                 {
                                                                     trend > 0 ? '+' : ''
@@ -311,7 +311,7 @@ const Trades = ({
                                                                             </td>
                                                                             <td
                                                                                 className={trend > 0 ? 'green stat value' : trend < 0 ? 'red stat value' : 'stat value'}
-                                                                                style={getTrendColor(trend, 1)}
+                                                                                style={getTrendColor(trend, 1.5)}
                                                                                 colSpan={3}
                                                                             >
                                                                                 {

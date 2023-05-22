@@ -177,7 +177,7 @@ const TableMain = ({
                                                 <tbody>
                                                     <tr
                                                         className={`${type} click ${itemActive === item.id ? 'active' : ''}`}
-                                                        onClickCapture={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
+                                                        onClick={setItemActive ? () => setItemActive(prevState => prevState === item.id ? '' : item.id) : null}
                                                     >
                                                         {
                                                             item.list

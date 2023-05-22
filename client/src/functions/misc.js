@@ -170,7 +170,9 @@ export const getPlayerBreakdown = (
     setTooltipVisible,
     setPlayerModalVisible,
     allPlayers,
-    value
+    value,
+    scoring_settings,
+    league
 ) => {
 
     return <span
@@ -191,12 +193,18 @@ export const getPlayerBreakdown = (
     >
         {
             tooltipVisible === player_id
-                ? <p onClick={
-                    () => setPlayerModalVisible({
-                        ...allPlayers[player_id],
-                        trend_games: trend_games,
-                        scoring_settings: ppr_scoring_settings
-                    })
+                ? <p className='tooltip' onClick={
+                    (e) => {
+                        console.log(scoring_settings)
+                        e.stopPropagation()
+                        setPlayerModalVisible({
+                            ...(scoring_settings && player_id || allPlayers[player_id]),
+                            trend_games: trend_games,
+                            scoring_settings: scoring_settings || ppr_scoring_settings,
+                            league
+                        })
+                        setTooltipVisible(false)
+                    }
                 }>
                     Breakdown
                 </p>

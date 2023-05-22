@@ -69,7 +69,7 @@ export const filterData = (leagues, type1, type2, tab, season) => {
                                 })
 
                             if (roster.draft_picks && roster.draft_picks.length > 0) {
-                                roster.draft_picks.map(pick => {
+                                roster.draft_picks.forEach(pick => {
                                     const pick_text = `${pick.season}_${pick.round}_${pick.order?.toLocaleString("en-US", { minimumIntegerDigits: 2 })}`
                                     let pick_leagues = players_dict[pick_text] || {
                                         id: pick_text,

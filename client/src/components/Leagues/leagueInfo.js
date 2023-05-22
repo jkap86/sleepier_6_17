@@ -175,7 +175,7 @@ const LeagueInfo = ({
                             scoring_settings: scoring_settings
                         })
                     }}>
-                        {trend_games && (Object.keys(player_score || {}).reduce((acc, cur) => acc + player_score[cur].points, 0) / trend_games.length).toFixed(1) || '-'}
+                        {trend_games?.length > 0 && (Object.keys(player_score || {}).reduce((acc, cur) => acc + player_score[cur].points, 0) / trend_games.length).toFixed(1) || '-'}
                     </span>,
                     colSpan: 5
                 }

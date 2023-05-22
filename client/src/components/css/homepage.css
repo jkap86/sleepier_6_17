@@ -30,12 +30,11 @@ div#homepage button {
 div#homepage div.picktracker {
   width: fit-content;
   display: flex;
-  justify-content: center;
-  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
   font-size: 3rem;
-  display: flex;
   flex-direction: column;
-  width: 25rem;
+  margin: 2rem;
   position: absolute;
   z-index: 2;
   filter: contrast(2);
@@ -44,6 +43,7 @@ div#homepage div.picktracker p.home {
   color: var(--color2);
   filter: brightness(2);
   text-align: center;
+  margin-bottom: 2rem;
 }
 div#homepage div.picktracker input.picktracker {
   padding: 1rem 0;
@@ -54,6 +54,7 @@ div#homepage div.picktracker input.picktracker {
 div#homepage div.picktracker button {
   border: 0.5rem ridge white;
   border-radius: 2rem;
+  margin: auto;
 }
 div#homepage div.home_wrapper {
   margin: auto;

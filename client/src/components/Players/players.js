@@ -7,7 +7,7 @@ import headshot from '../../images/headshot.png';
 import { getLocalDate } from '../../functions/dates';
 import { fetchStats, fetchValues, setTrendDateStart, setTrendDateEnd } from '../../actions/actions';
 import '../css/players.css';
-import { loadingIcon, getPlayerBreakdown } from "../../functions/misc";
+import { loadingIcon, getPlayerBreakdown, getTrendColor } from "../../functions/misc";
 import { draftClassFilterIcon, positionFilterIcon, teamFilterIcon } from "../../functions/filterIcons";
 
 const Players = ({ }) => {
@@ -372,36 +372,18 @@ const Players = ({ }) => {
                     },
                     {
                         text: <p
-                            className={statType1.endsWith('Trend') && (stat_trend1 > 0 ? 'green stat' : stat_trend1 < 0 ? 'red stat' : 'stat') || 'stat'}
-                            style={statType1.endsWith('Trend') && (stat_trend1 > 0 ? {
-                                color: `rgb(${255 - stat_trend1 / 1.5}, 255, ${255 - stat_trend1 / 1.5})`,
-
-                            }
-                                : stat_trend1 < 0
-                                    ? {
-                                        color: `rgb(255, ${255 + stat_trend1 / 1.5}, ${255 + stat_trend1 / 1.5})`
-                                    }
-                                    : {}) || {}
-                            }
+                            className={statType1.endsWith('Trend') && (stat_trend1 > 0 ? ' green stat' : stat_trend1 < 0 ? ' red stat' : 'stat') || 'stat'}
+                            style={statType1.endsWith('Trend') && getTrendColor(stat_trend1, 1.5) || {}}
                         >
                             {(statType1.endsWith('Trend') && stat_trend1 > 0 ? '+' : '') + stat_trend1}
                         </p>,
                         colSpan: 3,
-                        className: "stat"
+
                     },
                     {
                         text: <p
                             className={statType2.endsWith('Trend') && (stat_trend2 > 0 ? 'green stat' : stat_trend2 < 0 ? 'red stat' : 'stat') || 'stat'}
-                            style={statType2.endsWith('Trend') && (stat_trend2 > 0 ? {
-                                color: `rgb(${255 - stat_trend2 / 1.5}, 255, ${255 - stat_trend2 / 1.5})`,
-
-                            }
-                                : stat_trend2 < 0
-                                    ? {
-                                        color: `rgb(255, ${255 + stat_trend2 / 1.5}, ${255 + stat_trend2 / 1.5})`
-                                    }
-                                    : {}) || {}
-                            }
+                            style={statType2.endsWith('Trend') && getTrendColor(stat_trend2, 1.5) || {}}
                         >
                             {(statType2.endsWith('Trend') && stat_trend2 > 0 ? '+' : '') + stat_trend2}
                         </p>,
@@ -445,16 +427,17 @@ const Players = ({ }) => {
                         player_id={player.id}
                         allPlayers={allPlayers}
                         getPlayerScore={getPlayerScore}
-                        setPlayerModalVisible={setPlayerModalVisible}
                         tooltipVisible={tooltipVisible}
                         setTooltipVisible={setTooltipVisible}
+                        playerModalVisible={playerModalVisible}
+                        setPlayerModalVisible={setPlayerModalVisible}
                     />
                 )
             }
         })
         .sort(
             (a, b) => (sortBy === statType1.replace(/_/g, ' ')
-                ? (parseInt(b.list[2].text.props.children) || 0) - (parseInt(a.list[2].text.props.children) || 0)
+                ? (parseInt(b.list[3].text.props.children) || 0) - (parseInt(a.list[3].text.props.children) || 0)
                 : sortBy === statType2.replace(/_/g, ' ')
                     ? (parseFloat(b.list[4].text.props.children) || 0) - (parseFloat(a.list[4].text.props.children) || 0)
                     : sortBy === 'PPG'
@@ -562,18 +545,7 @@ const Players = ({ }) => {
                     :
                     null
             }
-            {
-                !playerModalVisible ?
-                    null
-                    :
-                    <div className="modal" ref={playerModalRef} >
-                        <PlayerModal
-                            setPlayerModalVisible={setPlayerModalVisible}
-                            player={playerModalVisible}
-                            getPlayerScore={getPlayerScore}
-                        />
-                    </div>
-            }
+
             <div className="trend-range">
                 <label className="sort">
                     <i class="fa-solid fa-beat fa-sort click"></i>
@@ -601,22 +573,36 @@ const Players = ({ }) => {
                     </i>
                 </label>
             </div>
-            <TableMain
-                id={'Players'}
-                type={'primary'}
-                headers={playerShares_headers}
-                body={playerShares_body}
-                page={page}
-                setPage={setPage}
-                itemActive={itemActive}
-                setItemActive={setItemActive}
-                search={true}
-                searched={searched}
-                setSearched={setSearched}
-                options1={[teamFilter]}
-                options2={[positionFilter, draftClassFilter]}
+            <div className="relative">
+                {
+                    !playerModalVisible ?
+                        null
+                        :
+                        <div className="modal" ref={playerModalRef} >
+                            <PlayerModal
+                                setPlayerModalVisible={setPlayerModalVisible}
+                                player={playerModalVisible}
+                                getPlayerScore={getPlayerScore}
+                            />
+                        </div>
+                }
+                <TableMain
+                    id={'Players'}
+                    type={'primary'}
+                    headers={playerShares_headers}
+                    body={playerShares_body}
+                    page={page}
+                    setPage={setPage}
+                    itemActive={itemActive}
+                    setItemActive={setItemActive}
+                    search={true}
+                    searched={searched}
+                    setSearched={setSearched}
+                    options1={[teamFilter]}
+                    options2={[positionFilter, draftClassFilter]}
 
-            />
+                />
+            </div>
         </>
 }
 
