@@ -414,6 +414,7 @@ table.primary tbody tr.active2 td div.secondary.nav {
   margin: auto;
   overflow: hidden;
   background-color: black;
+  z-index: 8;
 }
 table.primary tbody tr.active2 td div.secondary.nav div {
   width: 50%;
@@ -611,9 +612,8 @@ table#trades tr.primary.active2 {
   top: 7rem;
   z-index: 6;
 }
-table#trades tr.primary.active2 thead,
-table#trades tr.primary.active2 tr,
-table#trades tr.primary.active2 div {
+table#trades tr.primary.active2 div,
+table#trades tr.primary.active2 table {
   position: sticky;
   top: 7rem;
 }

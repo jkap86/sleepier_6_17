@@ -485,6 +485,7 @@ table.primary {
                     margin: auto;
                     overflow: hidden;
                     background-color: black;
+                    z-index: 8;
 
                     div {
                         width: 50%;
@@ -792,11 +793,11 @@ table#trades {
         top: 7rem;
         z-index: 6;
 
-        thead,
-        tr,
-        div {
+        div,
+        table {
             position: sticky;
             top: 7rem;
+
         }
 
         thead {
