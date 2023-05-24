@@ -441,9 +441,9 @@ const Players = ({ }) => {
                 : sortBy === statType2.replace(/_/g, ' ')
                     ? (parseFloat(b.list[4].text.props.children) || 0) - (parseFloat(a.list[4].text.props.children) || 0)
                     : sortBy === 'PPG'
-                        ? (parseFloat(b.list[5].text.props.children) || 0) - (parseFloat(a.list[5].text.props.children) || 0)
+                        ? (parseFloat(b.list[5].text.props.children[1]) || 0) - (parseFloat(a.list[5].text.props.children[1]) || 0)
                         : sortBy === 'GP'
-                            ? (parseInt(b.list[6].text) || 0) - (parseInt(a.list[6].text) || 0)
+                            ? (parseInt(b.list[6].text.props.children) || 0) - (parseInt(a.list[6].text.props.children) || 0)
 
                             : (parseInt(b.list[1].text) || 0) - (parseInt(a.list[1].text) || 0)
 
@@ -555,10 +555,10 @@ const Players = ({ }) => {
                         value={sortBy}
                     >
                         <option>OWNED</option>
-                        <option>{statType1}</option>
-                        <option>{statType2}</option>
-                        <option>GP</option>
+                        <option>{statType1.replace(/_/g, ' ')}</option>
+                        <option>{statType2.replace(/_/g, ' ')}</option>
                         <option>PPG</option>
+                        <option>GP</option>
                     </select>
                 </label>
                 &nbsp;
