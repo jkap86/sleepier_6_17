@@ -327,6 +327,15 @@ table.primary thead tr th label select.hidden_behind option {
   font-weight: 900;
   text-align: center;
 }
+table.primary thead tr th select {
+  color: var(--color2);
+  background-color: inherit;
+  text-align: center;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  border: none;
+}
 table.primary thead tr label:hover {
   overflow: visible;
   background-color: black;
@@ -387,8 +396,6 @@ table.primary tbody tr td.left > p {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 100%;
-  position: relative;
-  z-index: 2;
 }
 table.primary tbody tr.active {
   position: sticky;

@@ -31,6 +31,13 @@ h2 {
   margin: 2rem auto;
 }
 
+option {
+  background-color: #9ca7b4;
+  color: black;
+  font-weight: inherit;
+  font-family: inherit;
+}
+
 .green {
   color: greenyellow;
   text-shadow: 0 0 1.5rem black;
@@ -76,6 +83,8 @@ h2 {
   width: fit-content;
   min-width: 90%;
   background-color: black;
+  position: relative;
+  z-index: 2;
 }
 
 .left:hover > p:only-of-type,

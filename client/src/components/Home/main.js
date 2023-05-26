@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { loadingIcon } from "../../functions/misc";
 import { useDispatch, useSelector } from "react-redux";
 import { resetState, fetchUser, fetchLeagues, fetchFilteredData, fetchLmTrades } from "../../actions/actions";
@@ -37,11 +37,13 @@ const Main = () => {
         }
     }, [user, leagues, dispatch])
 
+    const handleFetchFilteredData = useCallback((leagues, type1, type2, tab, league_season) => {
+        dispatch(fetchFilteredData(leagues, type1, type2, tab, league_season));
+    })
 
     useEffect(() => {
         if (user.user_id) {
-            dispatch(fetchFilteredData(leagues, type1, type2, tab, state.league_season));
-
+            handleFetchFilteredData(leagues, type1, type2, tab, state.league_season)
         }
     }, [leagues, type1, type2, tab])
 

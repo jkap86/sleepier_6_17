@@ -362,6 +362,16 @@ table.primary {
                         }
                     }
                 }
+
+                select {
+                    color: var(--color2);
+                    background-color: inherit;
+                    text-align: center;
+                    font-family: inherit;
+                    font-size: inherit;
+                    font-weight: inherit;
+                    border: none;
+                }
             }
 
 
@@ -444,8 +454,6 @@ table.primary {
                     overflow: hidden;
                     text-overflow: ellipsis;
                     width: 100%;
-                    position: relative;
-                    z-index: 2;
 
                 }
             }

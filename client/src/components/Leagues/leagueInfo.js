@@ -167,14 +167,7 @@ const LeagueInfo = ({
                     }
                 },
                 {
-                    text: <span onClick={(e) => {
-                        e.stopPropagation()
-                        setPlayerModalVisible({
-                            ...stateAllPlayers[starter],
-                            trend_games: trend_games,
-                            scoring_settings: scoring_settings
-                        })
-                    }}>
+                    text: <span >
                         {trend_games?.length > 0 && (Object.keys(player_score || {}).reduce((acc, cur) => acc + player_score[cur].points, 0) / trend_games.length).toFixed(1) || '-'}
                     </span>,
                     colSpan: 5
