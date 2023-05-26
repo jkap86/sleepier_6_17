@@ -160,6 +160,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
 
             for (let i = 0; i < rosters.length; i++) {
                 original_picks[rosters[i].roster_id] = []
+
                 for (let j = parseInt(draft_season); j <= parseInt(draft_season) + 2; j++) {
 
                     for (let k = 1; k <= league.settings.draft_rounds; k++) {
@@ -181,7 +182,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
                     }
                 }
 
-                traded_picks.filter(x => x.owner_id === rosters[i].roster_id)
+                traded_picks.filter(x => x.owner_id === rosters[i].roster_id && parseInt(x.season) >= draft_season)
                     .map(pick => {
                         const original_user = users.find(u => rosters.find(r => r.roster_id === pick.roster_id)?.owner_id === u.user_id)
                         return original_picks[rosters[i].roster_id].push({
