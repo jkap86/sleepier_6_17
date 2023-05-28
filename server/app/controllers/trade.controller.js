@@ -60,14 +60,20 @@ exports.leaguemate = async (req, res) => {
                     attributes: [],
                     through: { attributes: [] },
                     include: {
-                        model: User,
-                        as: 'leaguemates',
+                        model: League,
                         attributes: [],
                         through: { attributes: [] },
-                        where: {
-                            user_id: req.body.user_id
+                        include: {
+                            model: User,
+                            attributes: [],
+                            through: { attributes: [] },
+                            where: {
+                                user_id: req.body.user_id
+                            },
+                            duplicating: false
                         },
                         duplicating: false,
+                        required: true
 
                     },
                     duplicating: false,

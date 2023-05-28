@@ -20,5 +20,5 @@ module.exports = async (app) => {
         if (state.display_week > 0 && state.display_week < 19) {
             getProjections(state.league_season, state.display_week)
         }
-    }, 1 * 60 * 60 * 1000)
+    }, 15 * 60 * 1000)
 }
