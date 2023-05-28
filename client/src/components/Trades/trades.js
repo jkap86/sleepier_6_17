@@ -163,7 +163,7 @@ const Trades = ({
                                                 colSpan: 9,
 
                                                 image: {
-                                                    src: trade.league?.avatar,
+                                                    src: trade?.['league.avatar'],
                                                     alt: 'league avatar',
                                                     type: 'league'
                                                 }
@@ -463,24 +463,25 @@ const Trades = ({
         ...picks_list
     ]
 
-    const picks_list2 = picks_list
-        .filter(draft_pick =>
-            tradesDisplay?.find(trade =>
-                trade.draft_picks.find(pick =>
-                    draft_pick.id === `${pick.season} ${pick.round}.${pick.season === stateState.league_season && pick.order ? (pick.order).toLocaleString("en-US", { minimumIntegerDigits: 2 }) : null}`
-                )
-            )
-        )
-        .map(pick => {
-            return {
-                id: pick.id,
-                text: pick.text,
-                image: {
-                    src: null,
-                    alt: 'pick headshot',
-                    type: 'player'
-                }
-            }
+    const managers_list = []
+
+    leagues
+        .forEach(league => {
+            league.rosters
+                .filter(r => parseInt(r.user_id) > 0)
+                .forEach(roster => {
+                    if (!managers_list.find(m => m.id === roster.user_id)) {
+                        managers_list.push({
+                            id: roster.user_id,
+                            text: roster.username,
+                            image: {
+                                src: roster.avatar,
+                                alt: 'user avatar',
+                                type: 'user'
+                            }
+                        })
+                    }
+                })
         })
 
 
@@ -503,7 +504,7 @@ const Trades = ({
                         id={'By Manager'}
                         sendSearched={(data) => setSearched_Manager(data)}
                         placeholder={`Manager`}
-                        list={[]}
+                        list={managers_list}
                         tab={tab}
                     />
 
