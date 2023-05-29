@@ -39,7 +39,7 @@ const Lineup = ({
 
     const handleSync = (league_id, user_id) => {
         setSyncing(true)
-        syncLeague(league_id, stateState.display_week)
+        dispatch(syncLeague(league_id, user_id))
         setTimeout(() => {
             setSyncing(false)
         }, 5000)
@@ -337,7 +337,7 @@ const Lineup = ({
             </div>
             <button
                 className={`sync ${syncing ? '' : 'click'}`}
-                onClick={syncing ? null : () => dispatch(syncLeague(league.league_id, stateState.display_week))}
+                onClick={syncing ? null : () => handleSync(league.league_id, league.userRoster.user_id)}
             >
                 <i className={`fa-solid fa-arrows-rotate ${syncing ? 'rotate' : ''}`}></i>
             </button>

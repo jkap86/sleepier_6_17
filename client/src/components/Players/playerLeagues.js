@@ -1,5 +1,5 @@
 import TableMain from "../Home/tableMain";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 //  import LeagueInfo from "../Leagues/leagueInfo";
 import { useSelector } from 'react-redux';
 import LeagueInfo from "../Leagues/leagueInfo";
@@ -26,6 +26,38 @@ const PlayerLeagues = ({
     const { stats: stateStats } = useSelector(state => state.stats)
     const [playerModalVisible2, setPlayerModalVisible2] = useState(false)
     const playerModalRef = useRef(null)
+
+
+    useEffect(() => {
+        if (playerModalRef.current) {
+            playerModalRef.current.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center'
+            })
+        }
+    }, [playerModalVisible2])
+
+    useEffect(() => {
+        const handleExitModal = (ref, setState) => {
+            return (event) => {
+                if (!ref.current || !ref.current.contains(event.target)) {
+
+                    setState(false)
+                }
+            }
+        };
+
+
+        const handleExitPlayerModal = handleExitModal(playerModalRef, setPlayerModalVisible2)
+
+        document.addEventListener('mousedown', handleExitPlayerModal)
+        document.addEventListener('touchstart', handleExitPlayerModal)
+
+        return () => {
+            document.removeEventListener('mousedown', handleExitPlayerModal);
+            document.removeEventListener('touchstart', handleExitPlayerModal);
+        };
+    }, [])
 
     let player_leagues_headers = [
         [
@@ -55,8 +87,6 @@ const PlayerLeagues = ({
             }
         )
     }
-
-
 
     const leagues_display = tab === 'Owned' ? leagues_owned :
         tab === 'Taken' ? leagues_taken :

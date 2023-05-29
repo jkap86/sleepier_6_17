@@ -46,10 +46,7 @@ const leaguesReducer = (state = initialState, action) => {
         case 'SYNC_LEAGUES_SUCCESS':
             const updated_leagues = state.leagues.map(l => {
                 if (l.league_id === action.payload.league_id) {
-                    return {
-                        ...l,
-                        [`matchups_${action.payload.week}`]: action.payload.matchups_new
-                    }
+                    return action.payload
                 }
                 return l
             })

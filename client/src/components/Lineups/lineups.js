@@ -7,7 +7,7 @@ import '../css/lineups.css';
 const Lineups = ({
     syncLeague
 }) => {
-    const [tab, setTab] = useState('Weekly Rankings')
+    const [tab, setTab] = useState('Lineup Check')
     const { user: state_user } = useSelector(state => state.user)
     const { allPlayers: stateAllPlayers, state: stateState, nflSchedule: stateNflSchedule } = useSelector(state => state.leagues)
     const { leaguesFiltered: stateLeagues } = useSelector(state => state.filteredData)

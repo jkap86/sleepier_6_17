@@ -1,6 +1,6 @@
 import TableMain from "../Home/tableMain";
 import { getLineupCheck } from "../../functions/getLineupCheck";
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import Lineup from "./lineup";
 import { useSelector } from 'react-redux';
 import { includeTaxiIcon, includeLockedIcon } from "../../functions/filterIcons";
@@ -59,12 +59,8 @@ const LineupCheck = ({
         ]
     ]
 
-    const handleGetLineupCheck = useCallback((matchup, league) => {
-        return getLineupCheck(matchup, league, stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week], includeTaxi, includeLocked)
 
-    }, [stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week], includeTaxi, includeLocked])
-
-    const lineups_body = stateLeagues?.map(league => {
+    const lineups_body = (stateLeagues || [])?.map(league => {
         const matchups = league[`matchups_${stateState.display_week}`]
 
         const matchup = matchups?.find(m => m.roster_id === league.userRoster.roster_id)
@@ -80,13 +76,13 @@ const LineupCheck = ({
 
 
         }
-        let lineups = matchup && handleGetLineupCheck(matchup, league)
+        let lineups = matchup && getLineupCheck(matchup, league, stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week], includeTaxi, includeLocked)
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
         const starting_slots = lineups?.starting_slots
         const players_points = { ...lineups?.players_points, ...opponentMatchup?.players_points }
 
-        console.log(lineup_check)
+
         return {
             id: league.league_id,
             search: {

@@ -324,13 +324,17 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
 
 exports.sync = async (req, res, app) => {
     const state = app.get('state')
-    const matchups = await axios.get(`https://api.sleeper.app/v1/league/${req.body.league_id}/matchups/${state.display_week}`)
-    await League.update({ [`matchups_${state.display_week}`]: matchups.data }, {
+
+    const updated_league = await getBatchLeaguesDetails([req.body.league_id], state.display_week, false)
+
+    await League.update({
+        ...updated_league[0]
+    }, {
         where: {
-            league_id: req.body.league_id
+            league_id: updated_league[0]?.league_id
         }
     })
-    res.send(matchups.data)
+    res.send(updated_league[0])
 }
 
 exports.picktracker = async (req, res, app) => {

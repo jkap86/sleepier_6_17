@@ -6,7 +6,7 @@ const initialState = {
     tab: 'Players',
     type1: 'All',
     type2: 'All',
-    trendDateStart: new Date(new Date() - 30 * 24 * 60 * 60 * 1000 - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0],
+    trendDateStart: new Date(new Date() - 365 * 24 * 60 * 60 * 1000 - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0],
     trendDateEnd: new Date(new Date() - new Date().getTimezoneOffset() * 60000).toISOString().split('T')[0],
     errorUser: null
 };

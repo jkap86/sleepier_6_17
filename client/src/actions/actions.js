@@ -151,21 +151,23 @@ export const fetchValues = (trendDateStart, trendDateEnd, dates) => async (dispa
     }
 };
 
-export const syncLeague = (league_id, week) => {
+export const syncLeague = (league_id, user_id) => {
     return async (dispatch) => {
         dispatch({ type: 'SYNC_LEAGUE_START' })
 
         try {
-            const matchups_new = await axios.post(`/league/sync`, {
-                league_id: league_id,
-                week: week
+            const updated_league = await axios.post(`/league/sync`, {
+                league_id: league_id
             })
 
+            const userRoster = updated_league.data.rosters
+                ?.find(r => r.user_id === user_id || r.co_owners?.find(co => co?.user_id === user_id))
+
             dispatch({
-                type: 'SYNC_LEAGUES_SUCCESS', payload: {
-                    league_id: league_id,
-                    week: week,
-                    matchups_new: matchups_new.data
+                type: 'SYNC_LEAGUES_SUCCESS',
+                payload: {
+                    ...updated_league.data,
+                    userRoster: userRoster
                 }
             })
         } catch (error) {
