@@ -1,7 +1,7 @@
 import { getPlayerScore } from "./getPlayerScore"
 import { matchTeam } from "./misc"
 
-export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings, projections, schedule) => {
+export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings, projections, schedule, includeTaxi, includeLocked) => {
 
     const position_map = {
         'QB': ['QB'],
@@ -26,37 +26,49 @@ export const getLineupCheck = (matchup, league, stateAllPlayers, weeklyRankings,
     }
     const starting_slots = league.roster_positions.filter(x => Object.keys(position_map).includes(x))
 
-
+    const roster = league.rosters.find(r => r.roster_id === matchup.roster_id)
 
     let players = []
-    matchup?.players?.map(player_id => {
-        const playing = schedule
-            ?.find(matchup => matchup.team.find(t => matchTeam(t.id) === stateAllPlayers[player_id]?.team) || !stateAllPlayers[player_id]?.team)
-        players.push({
-            id: player_id,
-            rank: weeklyRankings
-                ? !playing
-                    ? 1001
-                    : weeklyRankings[player_id]?.prevRank
-                        ? matchup.starters?.includes(player_id)
-                            ? weeklyRankings[player_id]?.prevRank
-                            : weeklyRankings[player_id]?.prevRank + 1
-                        : matchup.starters?.includes(player_id)
-                            ? 999
-                            : 1000
-                : getPlayerScore([projections[player_id]], league.scoring_settings, true) || 0
+
+    matchup?.players
+        ?.filter(player_id => includeTaxi ? true : !(roster?.taxi || []).includes(player_id))
+        ?.map(player_id => {
+            const playing = schedule
+                ?.find(matchup => matchup.team.find(t => matchTeam(t.id) === stateAllPlayers[player_id]?.team) || !stateAllPlayers[player_id]?.team)
+            players.push({
+                id: player_id,
+                rank: weeklyRankings
+                    ? !playing
+                        ? 1001
+                        : weeklyRankings[player_id]?.prevRank
+                            ? matchup.starters?.includes(player_id)
+                                ? weeklyRankings[player_id]?.prevRank
+                                : weeklyRankings[player_id]?.prevRank + 1
+                            : matchup.starters?.includes(player_id)
+                                ? 999
+                                : 1000
+                    : getPlayerScore([projections[player_id]], league.scoring_settings, true) || 0
+            })
         })
-    })
 
     const getOptimalLineup = () => {
         let optimal_lineup = []
         let player_ranks_filtered = players
         starting_slots.map((slot, index) => {
-            const slot_options = player_ranks_filtered
-                .filter(x => position_map[slot].includes(stateAllPlayers[x.id]?.position))
-                .sort((a, b) => weeklyRankings ? a.rank - b.rank : b.rank - a.rank)
+            const kickoff = new Date(parseInt(schedule
+                ?.find(matchup => matchup.team.find(t => matchTeam(t.id) === (stateAllPlayers[matchup.starters?.[index]]?.team)))
+                ?.kickoff * 1000)).getTime()
 
-            const optimal_player = slot_options[0]?.id
+            const slot_options = player_ranks_filtered
+                .filter(x =>
+                    position_map[slot].includes(stateAllPlayers[x.id]?.position)
+                )
+                .sort(
+                    (a, b) => weeklyRankings ? a.rank - b.rank : b.rank - a.rank
+                )
+
+            const optimal_player = includeLocked && kickoff > new Date().getTime() ? matchup.starters[index] : slot_options[0]?.id
+
             player_ranks_filtered = player_ranks_filtered.filter(x => x.id !== optimal_player)
             optimal_lineup.push({
                 slot: position_abbrev[slot],

@@ -39,13 +39,13 @@ const Main = () => {
 
     const handleFetchFilteredData = useCallback((leagues, type1, type2, tab, league_season) => {
         dispatch(fetchFilteredData(leagues, type1, type2, tab, league_season));
-    })
+    }, [dispatch, leagues, type1, type2, tab, state.league_season])
 
     useEffect(() => {
         if (user.user_id) {
             handleFetchFilteredData(leagues, type1, type2, tab, state.league_season)
         }
-    }, [leagues, type1, type2, tab])
+    }, [user.user_id, handleFetchFilteredData])
 
 
     let display;

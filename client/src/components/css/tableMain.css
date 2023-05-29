@@ -454,7 +454,7 @@ table.primary table.secondary thead {
   filter: drop-shadow(0 0 1rem silver);
   position: sticky;
   top: 14rem;
-  z-index: 8;
+  z-index: 7;
 }
 table.primary table.secondary thead tr th {
   background-image: radial-gradient(black 0%, royalblue 500%);
@@ -465,7 +465,7 @@ table.primary table.secondary tbody tr td {
 table.primary table.secondary tbody tr.active {
   position: sticky;
   top: 21rem;
-  z-index: 7;
+  z-index: 6;
   filter: drop-shadow(0 0 1rem silver);
 }
 table.primary table.secondary tbody tr.active td {
@@ -619,8 +619,7 @@ table#trades tr.primary.active2 {
   top: 7rem;
   z-index: 6;
 }
-table#trades tr.primary.active2 div,
-table#trades tr.primary.active2 table {
+table#trades tr.primary.active2 div {
   position: sticky;
   top: 7rem;
 }

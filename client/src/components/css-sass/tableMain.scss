@@ -538,7 +538,7 @@ table.primary {
             filter: drop-shadow(0 0 1rem silver);
             position: sticky;
             top: 14rem;
-            z-index: 8;
+            z-index: 7;
 
             tr {
                 th {
@@ -559,7 +559,7 @@ table.primary {
             tr.active {
                 position: sticky;
                 top: 21rem;
-                z-index: 7;
+                z-index: 6;
                 filter: drop-shadow(0 0 1rem silver);
 
                 td {
@@ -801,8 +801,7 @@ table#trades {
         top: 7rem;
         z-index: 6;
 
-        div,
-        table {
+        div {
             position: sticky;
             top: 7rem;
 

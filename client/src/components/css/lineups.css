@@ -81,4 +81,14 @@ input.editRank {
   opacity: 0.75;
 }
 
+i.fa-ban {
+  color: red;
+  position: absolute;
+  font-size: 7rem;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
 /*# sourceMappingURL=lineups.css.map */

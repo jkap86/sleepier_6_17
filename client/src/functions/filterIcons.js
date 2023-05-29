@@ -1,3 +1,7 @@
+import taxi from '../images/taxi.png';
+import lock from '../images/locked.png';
+import unlock from '../images/unlocked.png';
+
 
 export const teamFilterIcon = (filterTeam, setFilterTeam) => {
     const nfl_teams = [
@@ -82,4 +86,26 @@ export const draftClassFilterIcon = (filterDraftClass, setFilterDraftClass, draf
             </select>
         </label>
     </span>
+}
+
+export const includeTaxiIcon = (includeTaxi, setIncludeTaxi) => {
+    return <div className='relative click' onClick={() => setIncludeTaxi(prevState => !prevState)}>
+        <img
+            src={taxi}
+            className='thumbnail'
+
+        />
+        {!includeTaxi && <i className="fa-solid fa-ban"></i>}
+    </div>
+}
+
+export const includeLockedIcon = (includeLocked, setIncludeLocked) => {
+    return <div className='relative click' onClick={() => setIncludeLocked(prevState => !prevState)}>
+        <img
+            src={includeLocked && lock || unlock}
+            className='thumbnail'
+
+        />
+
+    </div>
 }

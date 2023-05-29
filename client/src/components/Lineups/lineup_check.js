@@ -1,8 +1,9 @@
 import TableMain from "../Home/tableMain";
 import { getLineupCheck } from "../../functions/getLineupCheck";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import Lineup from "./lineup";
 import { useSelector } from 'react-redux';
+import { includeTaxiIcon, includeLockedIcon } from "../../functions/filterIcons";
 
 const LineupCheck = ({
     tab,
@@ -16,7 +17,8 @@ const LineupCheck = ({
     const { allPlayers: stateAllPlayers, state: stateState, nflSchedule: stateNflSchedule, projections } = useSelector(state => state.leagues)
     const { filteredData: stateLeagues } = useSelector(state => state.filteredData)
     const { rankings } = useSelector(state => state.lineups)
-
+    const [includeTaxi, setIncludeTaxi] = useState(true)
+    const [includeLocked, setIncludeLocked] = useState(true)
 
 
     const lineups_headers = [
@@ -57,7 +59,10 @@ const LineupCheck = ({
         ]
     ]
 
+    const handleGetLineupCheck = useCallback((matchup, league) => {
+        return getLineupCheck(matchup, league, stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week], includeTaxi, includeLocked)
 
+    }, [stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week], includeTaxi, includeLocked])
 
     const lineups_body = stateLeagues?.map(league => {
         const matchups = league[`matchups_${stateState.display_week}`]
@@ -75,7 +80,7 @@ const LineupCheck = ({
 
 
         }
-        let lineups = matchup && getLineupCheck(matchup, league, stateAllPlayers, rankings, projections, stateNflSchedule[stateState.display_week])
+        let lineups = matchup && handleGetLineupCheck(matchup, league)
         const optimal_lineup = lineups?.optimal_lineup
         const lineup_check = lineups?.lineup_check
         const starting_slots = lineups?.starting_slots
@@ -187,6 +192,8 @@ const LineupCheck = ({
             search={true}
             searched={searched}
             setSearched={setSearched}
+            options2={[includeLockedIcon(includeLocked, setIncludeLocked)]}
+            options1={[includeTaxiIcon(includeTaxi, setIncludeTaxi)]}
         />
     </>
 }
