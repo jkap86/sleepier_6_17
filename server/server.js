@@ -38,7 +38,7 @@ function start() {
     require('./app/routes/home.routes')(app)
     require('./app/routes/dynastyrankings.routes')(app)
     require('./app/routes/trade.routes')(app)
-
+    require('./app/routes/ringOfFire.routes')(app)
 
     app.get('*', async (req, res) => {
         res.sendFile(path.join(__dirname, '../client/build/index.html'));
@@ -51,6 +51,7 @@ function start() {
         require('./app/backgroundTasks/onServerBoot')(app)
         require('./app/backgroundTasks/findMostLeagus')(app)
         require('./app/backgroundTasks/getProjections')(app)
+        require('./app/backgroundTasks/ringOfFire')(app)
     });
 
 }

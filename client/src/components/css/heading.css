@@ -141,4 +141,17 @@ p.image strong {
   color: var(--color2);
 }
 
+button {
+  background-color: inherit;
+}
+
+select.nav {
+  background-color: transparent;
+  font-size: 3rem;
+  font-family: "GROUPE", sans-serif;
+  color: var(--color2);
+  text-align: center;
+  border: none;
+}
+
 /*# sourceMappingURL=heading.css.map */

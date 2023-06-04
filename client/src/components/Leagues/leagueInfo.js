@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import TableMain from "../Home/tableMain";
 import { default_scoring_settings, scoring_settings_display } from '../../functions/misc';
-import { Link } from "react-router-dom";
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStats } from "../../actions/actions";
 
@@ -12,16 +11,18 @@ const LeagueInfo = ({
     type,
     snapPercentageMin,
     snapPercentageMax,
-    setPlayerModalVisible
+    allplayers
 }) => {
     const dispatch = useDispatch();
     const { teamStats: stateStats } = useSelector(state => state.stats);
-    const { allPlayers: stateAllPlayers } = useSelector(state => state.leagues)
+    const { allPlayers: allPlayers } = useSelector(state => state.leagues)
     const { trendDateStart, trendDateEnd } = useSelector(state => state.user);
     const [itemActive, setItemActive] = useState('');
     const [secondaryContent, setSecondaryContent] = useState('Lineup')
 
-    console.log(stateStats)
+
+
+    const stateAllPlayers = allplayers || allPlayers
     useEffect(() => {
         const roster = league.rosters.find(x => x.roster_id === itemActive)
         if (roster) {
@@ -168,7 +169,16 @@ const LeagueInfo = ({
                 },
                 {
                     text: <span >
-                        {trend_games?.length > 0 && (Object.keys(player_score || {}).reduce((acc, cur) => acc + player_score[cur].points, 0) / trend_games.length).toFixed(1) || '-'}
+                        {
+
+                            trend_games?.length > 0
+                            && (Object.keys(player_score || {})
+                                .reduce(
+                                    (acc, cur) => acc + player_score[cur].points, 0
+                                ) / trend_games.length
+                            )
+                                .toFixed(1) || '-'
+                        }
                     </span>,
                     colSpan: 5
                 }
@@ -245,16 +255,7 @@ const LeagueInfo = ({
 
     return <>
         <div className={`${type || 'secondary'} nav`}>
-            <div>
-                {
-                    league.roster_positions.includes('K') ?
-                        <Link to={`/picktracker/${league.league_id}`} target='_blank'>
-                            Pick Tracker
-                        </Link>
-                        : null
-                }
-                <button className="active">Standings</button>
-            </div>
+
             <div>
                 {
                     active_roster ?

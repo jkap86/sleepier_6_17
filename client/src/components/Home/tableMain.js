@@ -171,7 +171,7 @@ const TableMain = ({
                                         className={`${type} click ${itemActive === item.id ? 'active_wrapper' : ''}`}
                                     >
                                         <td
-                                            colSpan={item.list.reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}
+                                            colSpan={item.list?.reduce((acc, cur) => acc + (cur.colSpan || 0), 0)}
                                         >
                                             <table className={`${type}_body`}>
                                                 <tbody>
@@ -181,8 +181,8 @@ const TableMain = ({
                                                     >
                                                         {
                                                             item.list
-                                                                .filter(x => x.text)
-                                                                .map((key, index) =>
+                                                                ?.filter(x => x.text)
+                                                                ?.map((key, index) =>
                                                                     <td
                                                                         key={index}
                                                                         colSpan={key.colSpan}

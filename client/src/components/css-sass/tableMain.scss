@@ -236,6 +236,13 @@ table {
 table.modal {
     filter: contrast(2);
 
+    caption>strong {
+        box-shadow: 0 0 2rem var(--wr);
+        height: 7rem;
+        display: block;
+        width: 90%;
+        margin: 2rem auto;
+    }
 
     th,
     td {
@@ -822,4 +829,10 @@ table#trades {
 
 
     }
+}
+
+table#managers {
+    font-size: 2.5rem;
+
+
 }

@@ -220,6 +220,13 @@ table {
 table.modal {
   filter: contrast(2);
 }
+table.modal caption > strong {
+  box-shadow: 0 0 2rem var(--wr);
+  height: 7rem;
+  display: block;
+  width: 90%;
+  margin: 2rem auto;
+}
 table.modal th,
 table.modal td {
   text-shadow: unset;
@@ -625,6 +632,10 @@ table#trades tr.primary.active2 div {
 }
 table#trades tr.primary.active2 thead tr {
   position: unset;
+}
+
+table#managers {
+  font-size: 2.5rem;
 }
 
 /*# sourceMappingURL=tableMain.css.map */

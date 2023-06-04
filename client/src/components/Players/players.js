@@ -522,21 +522,15 @@ const Players = ({ }) => {
                                         max={'100'}
                                         value={snapPercentageMin}
                                         onChange={(e) => setSnapPercentageMin(e.target.value)}
-                                        onBlur={(e) => handleMaxMinChange('minsnappct', e.target.value)}
-                                        onMouseLeave={(e) => handleMaxMinChange('minsnappct', e.target.value)}
-                                        onMouseEnter={(e) => handleMaxMinChange('maxsnappct', e.target.value)}
                                     /> %
                                 </div>
                                 <div className="modal-grid-content three">
-                                    Min <input
+                                    Max <input
                                         type={'number'}
                                         min={'0'}
                                         max={'100'}
                                         value={snapPercentageMax}
                                         onChange={(e) => setSnapPercentageMax(e.target.value)}
-                                        onBlur={(e) => handleMaxMinChange('maxsnappct', e.target.value)}
-                                        onMouseLeave={(e) => handleMaxMinChange('maxsnappct', e.target.value)}
-                                        onMouseEnter={(e) => handleMaxMinChange('minsnappct', e.target.value)}
                                     /> %
                                 </div>
                             </div>

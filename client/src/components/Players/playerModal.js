@@ -20,11 +20,13 @@ const PlayerModal = ({
                 setPlayerModalVisible(false)
             }}>X</button>
             <table className="modal">
-                <caption>{avatar(player?.player_id, 'player', 'player')}
+                <caption>
                     <strong>
+                        {avatar(player?.player_id, 'player', 'player')}
                         {player?.full_name}
-                        <br />{league?.name}
-                    </strong></caption>
+                    </strong>
+                    <p className='small'>{league && avatar(league?.avatar, 'league', 'league')}<span>{league?.name}</span></p>
+                </caption>
                 <thead>
                     <tr>
                         <th colSpan={3}>
