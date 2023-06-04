@@ -5,89 +5,99 @@ const User = db.users;
 const axios = require('../api/axiosInstance');
 const sequelize = db.sequelize;
 const Op = db.Sequelize.Op;
+const NodeCache = require('node-cache');
+const cache = new NodeCache()
 
 
 exports.find = async (req, res, app) => {
-    const state = app.get('state')
 
-    // get current user leagues and convert to array of league_ids
+    const leagues_cache = cache.get(req.body.user_id)
 
-    let leagues = await axios.get(`https://api.sleeper.app/v1/user/${req.body.user_id}/leagues/nfl/${state.league_season}`)
+    if (leagues_cache) {
+        console.log('leagues from cache...')
+        res.send(JSON.parse(leagues_cache))
+    } else {
+        const state = app.get('state')
 
-    const league_ids = []
-    leagues.data.map((league, index) => {
-        return league_ids[index] = league.league_id
-    })
+        // get current user leagues and convert to array of league_ids
 
-    const [leagues_to_add, leagues_to_update, leagues_up_to_date] = await getLeaguesToUpsert(req.body.user_id, league_ids)
+        let leagues = await axios.get(`https://api.sleeper.app/v1/user/${req.body.user_id}/leagues/nfl/${state.league_season}`)
 
-    //  get updated data for leagues_to_add and leagues_to_update
+        const league_ids = []
+        leagues.data.map((league, index) => {
+            return league_ids[index] = league.league_id
+        })
 
-    const new_leagues = await getBatchLeaguesDetails(leagues_to_add, state.display_week, true)
-    const updated_leagues = await getBatchLeaguesDetails(leagues_to_update, state.display_week, false)
+        const [leagues_to_add, leagues_to_update, leagues_up_to_date] = await getLeaguesToUpsert(req.body.user_id, league_ids)
 
-    const all_leagues = [...new_leagues, ...updated_leagues]
+        //  get updated data for leagues_to_add and leagues_to_update
+
+        const new_leagues = await getBatchLeaguesDetails(leagues_to_add, state.display_week, true)
+        const updated_leagues = await getBatchLeaguesDetails(leagues_to_update, state.display_week, false)
+
+        const all_leagues = [...new_leagues, ...updated_leagues]
 
 
 
-    try {
-        const keys = ["name", "avatar", "settings", "scoring_settings", "roster_positions",
-            "rosters", "drafts", "updatedAt"]
+        try {
+            const keys = ["name", "avatar", "settings", "scoring_settings", "roster_positions",
+                "rosters", "drafts", "updatedAt"]
 
-        if (state.display_week > 0 && state.display_week < 19) {
-            keys.push(`matchups_${state.display_week}`)
+            if (state.display_week > 0 && state.display_week < 19) {
+                keys.push(`matchups_${state.display_week}`)
+            }
+
+
+
+            await League.bulkCreate(all_leagues, {
+                updateOnDuplicate: keys
+            })
+
+        } catch (error) {
+            console.log(error)
         }
 
+        //  get other users from each league and create associations
 
+        const user_data = []
+        const user_league_data = []
 
-        await League.bulkCreate(all_leagues, {
-            updateOnDuplicate: keys
-        })
+        all_leagues.forEach(league => {
+            return league.users.map(user => {
+                user_data.push({
+                    user_id: user.user_id,
+                    username: user.display_name,
+                    avatar: user.avatar,
+                    type: 'LM',
+                    updatedAt: new Date()
+                })
 
-    } catch (error) {
-        console.log(error)
-    }
-
-    //  get other users from each league and create associations
-
-    const user_data = []
-    const user_league_data = []
-
-    all_leagues.forEach(league => {
-        return league.users.map(user => {
-            user_data.push({
-                user_id: user.user_id,
-                username: user.display_name,
-                avatar: user.avatar,
-                type: 'LM',
-                updatedAt: new Date()
-            })
-
-            user_league_data.push({
-                userUserId: user.user_id,
-                leagueLeagueId: league.league_id
+                user_league_data.push({
+                    userUserId: user.user_id,
+                    leagueLeagueId: league.league_id
+                })
             })
         })
-    })
 
-    try {
-        await User.bulkCreate(user_data, { ignoreDuplicates: true })
+        try {
+            await User.bulkCreate(user_data, { ignoreDuplicates: true })
 
-        await sequelize.model('userLeagues').bulkCreate(user_league_data, { ignoreDuplicates: true })
-    } catch (error) {
-        console.log(error)
-    }
+            await sequelize.model('userLeagues').bulkCreate(user_league_data, { ignoreDuplicates: true })
+        } catch (error) {
+            console.log(error)
+        }
 
-
-
-    res.send(
-        [...new_leagues, ...updated_leagues, ...leagues_up_to_date]
+        const leagues_to_send = [...new_leagues, ...updated_leagues, ...leagues_up_to_date]
             .sort((a, b) => league_ids.indexOf(a.league_id) - league_ids.indexOf(b.league_id))
-    )
 
 
-
-
+        try {
+            cache.set(req.body.user_id, JSON.stringify(leagues_to_send), 1800)
+        } catch (error) {
+            console.log(error)
+        }
+        res.send(leagues_to_send)
+    }
 }
 
 const getLeaguesToUpsert = async (user_id, league_ids) => {

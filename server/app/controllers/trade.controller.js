@@ -5,93 +5,104 @@ const Trade = db.trades;
 const League = db.leagues;
 const Op = db.Sequelize.Op
 const sequelize = db.sequelize
-
+const NodeCache = require('node-cache');
+const cache_trades = new NodeCache()
 
 exports.leaguemate = async (req, res) => {
-    let filters = [];
+    const trades_cache = cache_trades.get(`${req.body.user_id}_${req.body.manager}_${req.body.player}`)
 
-    if (req.body.manager) {
-        filters.push({
-            managers: {
-                [Op.contains]: [req.body.manager]
-            }
-        })
-    }
+    if (trades_cache) {
+        console.log('trades from cache...')
+        res.send(trades_cache)
+    } else {
+        let filters = [];
 
-    if (req.body.player) {
-        if (req.body.player.includes('.')) {
-            const pick_split = req.body.player.split(' ')
-            const season = pick_split[0]
-            const round = parseInt(pick_split[1]?.split('.')[0])
-            const order = parseInt(season) === parseInt(new Date().getFullYear()) ? parseInt(pick_split[1]?.split('.')[1]) : null
-
+        if (req.body.manager) {
             filters.push({
-                players: {
-                    [Op.contains]: [`${season} ${round}.${order}`]
+                managers: {
+                    [Op.contains]: [req.body.manager]
                 }
-
-            })
-        } else {
-            filters.push({
-                players: {
-                    [Op.contains]: [req.body.player]
-                }
-
             })
         }
-    }
 
-    let lmTrades;
+        if (req.body.player) {
+            if (req.body.player.includes('.')) {
+                const pick_split = req.body.player.split(' ')
+                const season = pick_split[0]
+                const round = parseInt(pick_split[1]?.split('.')[0])
+                const order = parseInt(season) === parseInt(new Date().getFullYear()) ? parseInt(pick_split[1]?.split('.')[1]) : null
 
-    try {
-        lmTrades = await Trade.findAndCountAll({
-            order: [['status_updated', 'DESC']],
-            offset: req.body.offset,
-            limit: req.body.limit,
-            where: { [Op.and]: filters },
-            attributes: ['transaction_id', 'status_updated', 'rosters', 'managers', 'adds', 'drops', 'draft_picks', 'leagueLeagueId'],
-            include: [
-                {
-                    model: League,
-                    attributes: ['league_id', 'name', 'avatar', 'roster_positions', 'scoring_settings', 'settings'],
-                },
-                {
-                    model: User,
-                    attributes: [],
-                    through: { attributes: [] },
-                    include: {
+                filters.push({
+                    players: {
+                        [Op.contains]: [`${season} ${round}.${order}`]
+                    }
+
+                })
+            } else {
+                filters.push({
+                    players: {
+                        [Op.contains]: [req.body.player]
+                    }
+
+                })
+            }
+        }
+
+        let lmTrades;
+
+        try {
+            lmTrades = await Trade.findAndCountAll({
+                order: [['status_updated', 'DESC']],
+                offset: req.body.offset,
+                limit: req.body.limit,
+                where: { [Op.and]: filters },
+                attributes: ['transaction_id', 'status_updated', 'rosters', 'managers', 'adds', 'drops', 'draft_picks', 'leagueLeagueId'],
+                include: [
+                    {
                         model: League,
+                        attributes: ['league_id', 'name', 'avatar', 'roster_positions', 'scoring_settings', 'settings'],
+                    },
+                    {
+                        model: User,
                         attributes: [],
                         through: { attributes: [] },
                         include: {
-                            model: User,
+                            model: League,
                             attributes: [],
                             through: { attributes: [] },
-                            where: {
-                                user_id: req.body.user_id
+                            include: {
+                                model: User,
+                                attributes: [],
+                                through: { attributes: [] },
+                                where: {
+                                    user_id: req.body.user_id
+                                },
+                                duplicating: false
                             },
-                            duplicating: false
+                            duplicating: false,
+                            required: true
+
                         },
                         duplicating: false,
                         required: true
+                    }
+                ],
+                group: ['trade.transaction_id', 'league.league_id'],
+                raw: true
+            })
+        } catch (error) {
+            console.log(error)
+        }
 
-                    },
-                    duplicating: false,
-                    required: true
-                }
-            ],
-            group: ['trade.transaction_id', 'league.league_id'],
-            raw: true
-        })
-    } catch (error) {
-        console.log(error)
+        const trades_to_send = {
+            ...lmTrades,
+            count: lmTrades?.count?.length
+        }
+
+        cache_trades.set(`${req.body.user_id}_${req.body.manager}_${req.body.player}`, trades_to_send, 1800)
+
+        res.send(trades_to_send)
     }
-
-    res.send({
-        ...lmTrades,
-        count: lmTrades?.count?.length
-    })
-
 }
 
 exports.pricecheck = async (req, res) => {
