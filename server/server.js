@@ -51,7 +51,6 @@ function start() {
         require('./app/backgroundTasks/onServerBoot')(app)
         require('./app/backgroundTasks/findMostLeagus')(app)
         require('./app/backgroundTasks/getProjections')(app)
-        require('./app/backgroundTasks/ringOfFire')(app)
     });
 
 }

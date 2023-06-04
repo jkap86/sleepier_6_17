@@ -9,11 +9,7 @@ module.exports = app => {
         rof.home(req, res, app)
     })
 
-    router.post('/standings', async (req, res) => {
-
-        const standingsROF = app.get('standingsROF_' + req.body.season) || []
-        res.send(standingsROF)
-    })
+    router.post('/standings', rof.standings)
 
     app.use('/rof', router);
 }
