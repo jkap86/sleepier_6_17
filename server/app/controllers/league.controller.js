@@ -333,6 +333,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
 }
 
 exports.sync = async (req, res, app) => {
+    console.log({ user_id: req.body.user_id })
     const state = app.get('state')
 
     const updated_league = await getBatchLeaguesDetails([req.body.league_id], state.display_week, false)
@@ -344,6 +345,21 @@ exports.sync = async (req, res, app) => {
             league_id: updated_league[0]?.league_id
         }
     })
+
+    const leagues_cache = JSON.parse(cache.get(req.body.user_id))
+
+    if (leagues_cache) {
+
+        const updated_leagues = leagues_cache.map(league => {
+            if (league.league_id === updated_league[0]?.league_id) {
+                return updated_league[0]
+            } else {
+                return league
+            }
+        })
+
+        cache.set(req.body.user_id, JSON.stringify(updated_leagues), cache.ttl(req.body.user_id))
+    }
     res.send(updated_league[0])
 }
 

@@ -157,7 +157,8 @@ export const syncLeague = (league_id, user_id) => {
 
         try {
             const updated_league = await axios.post(`/league/sync`, {
-                league_id: league_id
+                league_id: league_id,
+                user_id: user_id
             })
 
             const userRoster = updated_league.data.rosters

@@ -167,7 +167,7 @@ const WeeklyRankings = ({
         let r = rankings || projections
 
         players_to_update.map(player_to_update => {
-            const prevRank = r[player_to_update.player_id].newRank
+            const prevRank = parseInt(r[player_to_update.player_id].newRank)
             const newRank = parseInt(player_to_update.rank) || ' '
 
             console.log({
@@ -197,14 +197,17 @@ const WeeklyRankings = ({
 
     const handleRankSave = () => {
 
-        let r = rankings
+        let r = rankings || projections
 
         Object.keys(r || {}).map(player_id => {
             return r[player_id].prevRank = !parseInt(r[player_id].newRank) ? 999 : r[player_id].newRank
         })
-        dispatch(uploadRankings({
-            rankings: r
-        }))
+        rankings
+            &&
+            dispatch(uploadRankings({
+                rankings: r
+            }))
+            || dispatch(updateSleeperRankings(r))
         setEdit(false)
 
     }
