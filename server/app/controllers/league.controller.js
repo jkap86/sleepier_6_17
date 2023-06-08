@@ -346,11 +346,16 @@ exports.sync = async (req, res, app) => {
         }
     })
 
-    const leagues_cache = JSON.parse(cache.get(req.body.user_id))
+    let leagues_cache;
+    try {
+        leagues_cache = cache.get(req.body.user_id)
+    } catch (error) {
+        console.log(error)
+    }
 
     if (leagues_cache) {
 
-        const updated_leagues = leagues_cache.map(league => {
+        const updated_leagues = JSON.parse(leagues_cache).map(league => {
             if (league.league_id === updated_league[0]?.league_id) {
                 return updated_league[0]
             } else {
@@ -358,7 +363,11 @@ exports.sync = async (req, res, app) => {
             }
         })
 
-        cache.set(req.body.user_id, JSON.stringify(updated_leagues), cache.ttl(req.body.user_id))
+        try {
+            cache.set(req.body.user_id, JSON.stringify(updated_leagues), cache.ttl(req.body.user_id))
+        } catch (error) {
+            console.log(error)
+        }
     }
     res.send(updated_league[0])
 }
