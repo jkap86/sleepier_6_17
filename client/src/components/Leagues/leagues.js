@@ -80,7 +80,41 @@ const Leagues = ({ }) => {
         }
     })
 
+    const wins = stateLeagues
+        ?.reduce(
+            (acc, cur) => acc + cur.userRoster?.settings?.wins, 0
+        )
+
+    const losses = stateLeagues
+        ?.reduce(
+            (acc, cur) => acc + cur.userRoster?.settings?.losses, 0
+        )
+
+    const ties = stateLeagues
+        ?.reduce(
+            (acc, cur) => acc + cur.userRoster?.settings?.ties, 0
+        )
+
+    const fpts = stateLeagues
+        ?.reduce(
+            (acc, cur) => acc + parseFloat((cur.userRoster?.settings?.fpts || 0) + '.' + (cur.userRoster?.settings?.fpts_decimal || 0)), 0
+        )
+        ?.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+
+    const fpts_against = stateLeagues
+        ?.reduce(
+            (acc, cur) => acc + parseFloat((cur.userRoster?.settings?.fpts_against || 0) + '.' + (cur.userRoster?.settings?.fpts_against_decimal || 0)), 0
+        )
+        ?.toLocaleString("en-US", { maximumFractionDigits: 2, minimumFractionDigits: 2 })
+
+
     return <>
+        <h2>
+            {wins}-{losses}{ties > 0 && `-${ties}`}
+        </h2>
+        <h2>
+            {fpts}-{fpts_against}
+        </h2>
         <TableMain
             id={'Leagues'}
             type={'primary'}

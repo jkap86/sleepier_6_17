@@ -77,10 +77,12 @@ exports.leaguemate = async (req, res) => {
                                 where: {
                                     user_id: req.body.user_id
                                 },
-                                duplicating: false
+                                duplicating: false,
+                                subQuery: true
                             },
                             duplicating: false,
-                            required: true
+                            required: true,
+                            subQuery: true
 
                         },
                         duplicating: false,
