@@ -1,6 +1,6 @@
 import TableMain from "../Home/tableMain";
 import { getLineupCheck } from "../../functions/getLineupCheck";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Lineup from "./lineup";
 import { useSelector } from 'react-redux';
 import { includeTaxiIcon, includeLockedIcon } from "../../functions/filterIcons";
@@ -13,13 +13,16 @@ const LineupCheck = ({
     const [itemActive, setItemActive] = useState('');
     const [page, setPage] = useState(1)
     const [searched, setSearched] = useState('')
-    const { user: state_user } = useSelector(state => state.user)
+    const { user: state_user, type1, type2 } = useSelector(state => state.user)
     const { allPlayers: stateAllPlayers, state: stateState, nflSchedule: stateNflSchedule, projections } = useSelector(state => state.leagues)
     const { filteredData: stateLeagues } = useSelector(state => state.filteredData)
     const { rankings } = useSelector(state => state.lineups)
     const [includeTaxi, setIncludeTaxi] = useState(true)
     const [includeLocked, setIncludeLocked] = useState(true)
 
+    useEffect(() => {
+        setPage(1)
+    }, [searched, type1, type2])
 
     const lineups_headers = [
         [

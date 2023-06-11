@@ -22,7 +22,7 @@ const lmTradesReducer = (state = initialState, action) => {
                 ...state,
                 lmTrades: {
                     count: action.payload.count,
-                    trades: [...state.lmTrades.trades, ...action.payload.trades]
+                    trades: [...state.lmTrades.trades, ...action.payload.trades.filter(t1 => !state.lmTrades.trades.find(t2 => t2.transaction_id === t1.transaction_id))]
                 },
                 isLoading: false
             };

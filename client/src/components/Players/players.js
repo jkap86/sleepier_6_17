@@ -91,6 +91,10 @@ const Players = ({ }) => {
         };
     }, [])
 
+    useEffect(() => {
+        setPage(1)
+    }, [playersharesFiltered])
+
     const handleMaxMinChange = (type, value) => {
 
         switch (type) {
@@ -437,7 +441,7 @@ const Players = ({ }) => {
         })
         .sort(
             (a, b) => (sortBy === statType1.replace(/_/g, ' ')
-                ? (parseInt(b.list[3].text.props.children) || 0) - (parseInt(a.list[3].text.props.children) || 0)
+                ? (parseFloat(b.list[3].text.props.children) || 0) - (parseFloat(a.list[3].text.props.children) || 0)
                 : sortBy === statType2.replace(/_/g, ' ')
                     ? (parseFloat(b.list[4].text.props.children) || 0) - (parseFloat(a.list[4].text.props.children) || 0)
                     : sortBy === 'PPG'

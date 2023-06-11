@@ -1,5 +1,5 @@
 import TableMain from "../Home/tableMain";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LeaguemateLeagues from './leaguemateLeagues'
 import { useSelector } from 'react-redux';
 
@@ -10,6 +10,10 @@ const Leaguemates = ({ }) => {
     const { user: state_user } = useSelector(state => state.user)
     const { allPlayers: stateAllPlayers } = useSelector(state => state.leagues)
     const { filteredData: stateLeaguemates } = useSelector(state => state.filteredData)
+
+    useEffect(() => {
+        setPage(1)
+    }, [stateLeaguemates])
 
     const leaguemates_headers = [
         [
@@ -60,7 +64,6 @@ const Leaguemates = ({ }) => {
 
         ]
     ]
-
 
     const leaguemates_body = (stateLeaguemates || [])
         ?.filter(x => x.username !== state_user.username)

@@ -1,5 +1,5 @@
 import TableMain from "../Home/tableMain";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LeagueInfo from "./leagueInfo";
 import { useSelector } from 'react-redux';
 
@@ -9,6 +9,10 @@ const Leagues = ({ }) => {
     const [searched, setSearched] = useState('')
     const { allPlayers: stateAllPlayers } = useSelector(state => state.leagues)
     const { filteredData: stateLeagues } = useSelector(state => state.filteredData)
+
+    useEffect(() => {
+        setPage(1)
+    }, [stateLeagues])
 
     const leagues_headers = [
         [
