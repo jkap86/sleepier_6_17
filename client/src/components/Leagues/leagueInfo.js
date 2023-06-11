@@ -3,6 +3,9 @@ import TableMain from "../Home/tableMain";
 import { default_scoring_settings, scoring_settings_display } from '../../functions/misc';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchStats } from "../../actions/actions";
+import ktcLogo from '../../images/KTClogo.png';
+import fantasycalcLogo from '../../images/fantasycalclogo.png';
+import { Link } from 'react-router-dom';
 
 const LeagueInfo = ({
     league,
@@ -298,9 +301,18 @@ const LeagueInfo = ({
                             </button>
                         </>
                         :
-                        <button className="active">
-                            Settings
-                        </button>
+                        <>
+
+                            <img src={ktcLogo} alt="ktclogo" onClick={() => {
+                                window.open(`https://keeptradecut.com/dynasty/power-rankings/league?leagueId=${league.league_id}&platform=Sleeper`)
+                            }} />
+                            <img src={fantasycalcLogo} alt="fantasycalclogo" onClick={() => {
+                                window.open(`https://fantasycalc.com/league/dashboard?leagueId=${league.league_id}&site=sleeper`)
+                            }} />
+                            <button className="active">
+                                Settings
+                            </button>
+                        </>
                 }
             </div>
         </div>

@@ -431,7 +431,7 @@ table.primary tbody tr.active2 td div.secondary.nav {
   z-index: 8;
 }
 table.primary tbody tr.active2 td div.secondary.nav div {
-  width: 100%;
+  width: 50%;
   height: 7rem;
   display: flex;
   justify-content: space-evenly;
@@ -485,7 +485,6 @@ table.primary table.secondary tbody tr.active2 td div.tertiary.nav {
   display: flex;
 }
 table.primary table.secondary tbody tr.active2 td div.tertiary.nav div {
-  width: 100%;
   height: 7rem;
   display: flex;
   justify-content: space-evenly;
