@@ -18,8 +18,8 @@ const Players = ({ }) => {
     const [filterPosition, setFilterPosition] = useState('W/R/T/Q')
     const [filterTeam, setFilterTeam] = useState('All')
     const [filterDraftClass, setFilterDraftClass] = useState('All')
-    const [statType1, setStatType1] = useState('KTC SF')
-    const [statType2, setStatType2] = useState('SF Trend')
+    const [statType1, setStatType1] = useState('SF Dynasty (KTC)')
+    const [statType2, setStatType2] = useState('SF Trend Dynasty (KTC)')
     const [optionsVisible, setOptionsVisible] = useState(false)
     const [playerModalVisible, setPlayerModalVisible] = useState(false)
     const [snapPercentageMin, setSnapPercentageMin] = useState(0)
@@ -33,6 +33,8 @@ const Players = ({ }) => {
     const modalRef = useRef(null)
     const playerModalRef = useRef(null)
     const [tooltipVisible, setTooltipVisible] = useState(false)
+
+    console.log({ dynastyValues: dynastyValues })
 
     useEffect(() => {
 
@@ -168,7 +170,11 @@ const Players = ({ }) => {
 
             <select className="hidden_behind click" value={statType} onChange={(e) => setStatType(e.target.value)}>
                 {
-                    ['KTC SF', 'KTC 1QB', 'SF Trend', '1QB Trend']
+                    [
+                        'SF Dynasty (KTC)', 'SF Dynasty (FC)', 'SF Redraft (FC)', '1QB Dynasty (KTC)', '1QB Dynasty (FC)', '1QB Redraft (FC)',
+                        'SF Trend Dynasty (KTC)', 'SF Trend Dynasty (FC)', 'SF Trend Redraft (FC)',
+                        '1QB Trend Dynasty (KTC)', '1QB Trend Dynasty (FC)', '1QB Trend Redraft (FC)'
+                    ]
                         .filter(x => x !== otherType)
                         .map(cat => {
                             return <option value={cat}>
@@ -318,29 +324,101 @@ const Players = ({ }) => {
                 ) || []
 
 
-            const stat_trend1 = statType1 === 'KTC SF'
-                ? cur_value?.sf || '-'
-                : statType1 === 'KTC 1QB'
-                    ? cur_value?.oneqb || '-'
-                    : statType1 === 'SF Trend'
-                        ? (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
-                        : statType1 === '1QB Trend'
-                            ? (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
-                            : trend_games?.length > 0
-                            && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType1] || 0), 0) / trend_games?.length)?.toFixed(1)
-                            || '-'
+            let stat_trend1;
 
-            const stat_trend2 = statType2 === 'KTC SF'
-                ? cur_value?.sf || '-'
-                : statType2 === 'KTC 1QB'
-                    ? cur_value?.oneqb || '-'
-                    : statType2 === 'SF Trend'
-                        ? (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
-                        : statType2 === '1QB Trend'
-                            ? (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
-                            : trend_games?.length > 0
-                            && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType2] || 0), 0) / trend_games?.length)?.toFixed(1)
-                            || '-'
+
+
+            switch (statType1) {
+                case 'SF Dynasty (KTC)':
+                    stat_trend1 = cur_value?.sf || '-'
+                    break;
+                case 'SF Dynasty (FC)':
+                    stat_trend1 = cur_value?.sf_dynasty_fc || '-'
+                    break;
+                case 'SF Redraft (FC)':
+                    stat_trend1 = cur_value?.sf_redraft_fc || '-'
+                    break;
+                case '1QB Dynasty (KTC)':
+                    stat_trend1 = cur_value?.oneqb || '-'
+                    break;
+                case '1QB Dynasty (FC)':
+                    stat_trend1 = cur_value?.oneqb_dynasty_fc || '-'
+                    break;
+                case '1QB Redraft (FC)':
+                    stat_trend1 = cur_value?.oneqb_redraft_fc || '-'
+                    break;
+                case 'SF Trend Dynasty (KTC)':
+                    stat_trend1 = (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
+                    break;
+                case 'SF Trend Dynasty (FC)':
+                    stat_trend1 = (cur_value?.sf_dynasty_fc && prev_value?.sf_dynasty_fc && cur_value?.sf_dynasty_fc - prev_value?.sf_dynasty_fc) || '-'
+                    break;
+                case 'SF Trend Redraft (FC)':
+                    stat_trend1 = (cur_value?.sf_redraft_fc && prev_value?.sf_redraft_fc && cur_value?.sf_redraft_fc - prev_value?.sf_redraft_fc) || '-'
+                    break;
+                case '1QB Trend Dynasty (KTC)':
+                    stat_trend1 = (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
+                    break;
+                case '1QB Trend Dynasty (FC)':
+                    stat_trend1 = (cur_value?.oneqb_dynasty_fc && prev_value?.oneqb_dynasty_fc && cur_value?.oneqb_dynasty_fc - prev_value?.oneqb_dynasty_fc) || '-'
+                    break;
+                case '1QB Trend Redraft (FC)':
+                    stat_trend1 = (cur_value?.oneqb_redraft_fc && prev_value?.oneqb_redraft_fc && cur_value?.oneqb_redraft_fc - prev_value?.oneqb_redraft_fc) || '-'
+                    break;
+                default:
+                    stat_trend1 = trend_games?.length > 0
+                        && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType1] || 0), 0) / trend_games?.length)?.toFixed(1)
+                        || '-'
+                    break;
+            }
+
+            let stat_trend2;
+
+            switch (statType2) {
+                case 'SF Dynasty (KTC)':
+                    stat_trend2 = cur_value?.sf || '-'
+                    break;
+                case 'SF Dynasty (FC)':
+                    stat_trend2 = cur_value?.sf_dynasty_fc || '-'
+                    break;
+                case 'SF Redraft (FC)':
+                    stat_trend2 = cur_value?.sf_redraft_fc || '-'
+                    break;
+                case '1QB Dynasty (KTC)':
+                    stat_trend2 = cur_value?.oneqb || '-'
+                    break;
+                case '1QB Dynasty (FC)':
+                    stat_trend2 = cur_value?.oneqb_dynasty_fc || '-'
+                    break;
+                case '1QB Redraft (FC)':
+                    stat_trend2 = cur_value?.oneqb_redraft_fc || '-'
+                    break;
+                case 'SF Trend Dynasty (KTC)':
+                    stat_trend2 = (cur_value?.sf && prev_value?.sf && cur_value?.sf - prev_value?.sf) || '-'
+                    break;
+                case 'SF Trend Dynasty (FC)':
+                    stat_trend2 = (cur_value?.sf_dynasty_fc && prev_value?.sf_dynasty_fc && cur_value?.sf_dynasty_fc - prev_value?.sf_dynasty_fc) || '-'
+                    break;
+                case 'SF Trend Redraft (FC)':
+                    stat_trend2 = (cur_value?.sf_redraft_fc && prev_value?.sf_redraft_fc && cur_value?.sf_redraft_fc - prev_value?.sf_redraft_fc) || '-'
+                    break;
+                case '1QB Trend Dynasty (KTC)':
+                    stat_trend2 = (cur_value?.oneqb && prev_value?.oneqb && cur_value?.oneqb - prev_value?.oneqb) || '-'
+                    break;
+                case '1QB Trend Dynasty (FC)':
+                    stat_trend2 = (cur_value?.oneqb_dynasty_fc && prev_value?.oneqb_dynasty_fc && cur_value?.oneqb_dynasty_fc - prev_value?.oneqb_dynasty_fc) || '-'
+                    break;
+                case '1QB Trend Redraft (FC)':
+                    stat_trend2 = (cur_value?.oneqb_redraft_fc && prev_value?.oneqb_redraft_fc && cur_value?.oneqb_redraft_fc - prev_value?.oneqb_redraft_fc) || '-'
+                    break;
+                default:
+                    stat_trend2 = trend_games?.length > 0
+                        && (trend_games?.reduce((acc, cur) => acc + (cur.stats?.[statType1] || 0), 0) / trend_games?.length)?.toFixed(1)
+                        || '-'
+                    break;
+            }
+
+
 
             return {
                 id: player.id,
@@ -376,20 +454,20 @@ const Players = ({ }) => {
                     },
                     {
                         text: <p
-                            className={statType1.endsWith('Trend') && (stat_trend1 > 0 ? ' green stat' : stat_trend1 < 0 ? ' red stat' : 'stat') || 'stat'}
-                            style={statType1.endsWith('Trend') && getTrendColor(stat_trend1, 1.5) || {}}
+                            className={statType1.includes('Trend') && (stat_trend1 > 0 ? ' green stat' : stat_trend1 < 0 ? ' red stat' : 'stat') || 'stat'}
+                            style={statType1.includes('Trend') && getTrendColor(stat_trend1, 1.5) || {}}
                         >
-                            {(statType1.endsWith('Trend') && stat_trend1 > 0 ? '+' : '') + stat_trend1}
+                            {(statType1.includes('Trend') && stat_trend1 > 0 ? '+' : '') + stat_trend1}
                         </p>,
                         colSpan: 3,
 
                     },
                     {
                         text: <p
-                            className={statType2.endsWith('Trend') && (stat_trend2 > 0 ? 'green stat' : stat_trend2 < 0 ? 'red stat' : 'stat') || 'stat'}
-                            style={statType2.endsWith('Trend') && getTrendColor(stat_trend2, 1.5) || {}}
+                            className={statType2.includes('Trend') && (stat_trend2 > 0 ? 'green stat' : stat_trend2 < 0 ? 'red stat' : 'stat') || 'stat'}
+                            style={statType2.includes('Trend') && getTrendColor(stat_trend2, 1.5) || {}}
                         >
-                            {(statType2.endsWith('Trend') && stat_trend2 > 0 ? '+' : '') + stat_trend2}
+                            {(statType2.includes('Trend') && stat_trend2 > 0 ? '+' : '') + stat_trend2}
                         </p>,
                         colSpan: 3,
                         className: "stat"
