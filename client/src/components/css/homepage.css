@@ -196,8 +196,8 @@ div#homepage div.home_wrapper div.dropdown_wrapper ol.dropdown li button p {
 div#homepage div.home_wrapper div.dropdown_wrapper ol.dropdown li button p span.leagues_count {
   font-size: 4rem;
   line-height: 7rem;
-  width: 15%;
-  padding: 0;
+  width: fit-content;
+  padding: 0 2rem;
 }
 div#homepage div.home_wrapper div.dropdown_wrapper ol.dropdown li button p span.leagues_count:last-of-type {
   text-align: left;

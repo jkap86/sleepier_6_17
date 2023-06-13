@@ -221,8 +221,8 @@ div#homepage {
                             span.leagues_count {
                                 font-size: 4rem;
                                 line-height: 7rem;
-                                width: 15%;
-                                padding: 0;
+                                width: fit-content;
+                                padding: 0 2rem;
                             }
 
                             span.leagues_count:last-of-type {
