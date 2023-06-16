@@ -9,7 +9,7 @@ const NodeCache = require('node-cache');
 const cache = new NodeCache()
 
 
-exports.find = async (req, res, app) => {
+exports.find = async (req, res, home_cache) => {
 
     const leagues_cache = cache.get(req.body.user_id)
 
@@ -17,7 +17,7 @@ exports.find = async (req, res, app) => {
         console.log('leagues from cache...')
         res.send(JSON.parse(leagues_cache))
     } else {
-        const state = app.get('state')
+        const state = home_cache.get('state')
 
         // get current user leagues and convert to array of league_ids
 
@@ -27,6 +27,30 @@ exports.find = async (req, res, app) => {
         leagues.data.map((league, index) => {
             return league_ids[index] = league.league_id
         })
+
+        try {
+            const deleted = await sequelize.model('userLeagues').destroy({
+                where: {
+                    [Op.and]: [
+                        {
+                            userUserId: req.body.user_id
+                        },
+                        {
+                            leagueLeagueId: {
+                                [Op.not]: league_ids
+                            }
+                        }
+                    ]
+                }
+            })
+
+            if (deleted > 0) {
+                console.log(`${deleted} associations deleted for user ${req.body.user_id}`)
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
 
         const [leagues_to_add, leagues_to_update, leagues_up_to_date] = await getLeaguesToUpsert(req.body.user_id, league_ids)
 
@@ -47,8 +71,6 @@ exports.find = async (req, res, app) => {
                 keys.push(`matchups_${state.display_week}`)
             }
 
-
-
             await League.bulkCreate(all_leagues, {
                 updateOnDuplicate: keys
             })
@@ -62,8 +84,9 @@ exports.find = async (req, res, app) => {
         const user_data = []
         const user_league_data = []
 
-        all_leagues.forEach(league => {
-            return league.users.map(user => {
+        all_leagues.forEach(async league => {
+
+            league.users.map(user => {
                 user_data.push({
                     user_id: user.user_id,
                     username: user.display_name,
@@ -83,6 +106,8 @@ exports.find = async (req, res, app) => {
             await User.bulkCreate(user_data, { ignoreDuplicates: true })
 
             await sequelize.model('userLeagues').bulkCreate(user_league_data, { ignoreDuplicates: true })
+
+
         } catch (error) {
             console.log(error)
         }
@@ -305,6 +330,13 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
                 ...matchups,
                 updatedAt: Date.now(),
                 users: users.data
+                    ?.filter(user =>
+                        rosters.data
+                            ?.find(roster =>
+                                roster.owner_id === user.user_id
+                                || roster.co_owners?.find(co => co === user.user_id)
+                            )
+                    )
             }
         } catch (error) {
             console.error(error);
@@ -332,9 +364,9 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
     return results.filter(result => result !== undefined);
 }
 
-exports.sync = async (req, res, app) => {
+exports.sync = async (req, res, home_cache) => {
     console.log({ user_id: req.body.user_id })
-    const state = app.get('state')
+    const state = home_cache.get('state')
 
     const updated_league = await getBatchLeaguesDetails([req.body.league_id], state.display_week, false)
 
@@ -372,7 +404,7 @@ exports.sync = async (req, res, app) => {
     res.send(updated_league[0])
 }
 
-exports.picktracker = async (req, res, app) => {
+exports.picktracker = async (req, res, home_cache) => {
     let active_draft;
     let league;
     let league_drafts;
@@ -386,7 +418,7 @@ exports.picktracker = async (req, res, app) => {
 
 
     if (active_draft) {
-        const allplayers = app.get('allplayers')
+        const allplayers = home_cache.get('allplayers')
         const draft_picks = await axios.get(`https://api.sleeper.app/v1/draft/${active_draft.draft_id}/picks`)
         const users = await axios.get(`https://api.sleeper.app/v1/league/${req.body.league_id}/users`)
         const teams = Object.keys(active_draft.draft_order).length

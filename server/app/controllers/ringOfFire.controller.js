@@ -5,9 +5,9 @@ const NodeCache = require('node-cache');
 const cache = new NodeCache()
 
 
-exports.home = (req, res, app) => {
-    const state = app.get('state')
-    const allplayers = app.get('allplayers')
+exports.home = (req, res, home_cache) => {
+    const state = home_cache.get('state')
+    const allplayers = home_cache.get('allplayers')
 
     res.send({
         state: state,

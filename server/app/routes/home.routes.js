@@ -1,14 +1,14 @@
 'use strict'
 
-module.exports = app => {
+module.exports = (app, home_cache) => {
 
     var router = require("express").Router();
 
     router.get("/", (req, res) => {
-        const state = app.get('state')
-        const allplayers = app.get('allplayers')
-        const schedule = app.get('schedule')
-        const projections = app.get('projections')
+        const state = home_cache.get('state')
+        const allplayers = home_cache.get('allplayers')
+        const schedule = home_cache.get('schedule')
+        const projections = home_cache.get('projections')
         res.send({
             state: state,
             allplayers: allplayers,

@@ -1,4 +1,4 @@
-module.exports = async (app) => {
+module.exports = async (home_cache) => {
 
     const ALLPLAYERS = require('../../allplayers.json');
 
@@ -42,13 +42,13 @@ module.exports = async (app) => {
     }
 
     const state = await axios.get('https://api.sleeper.app/v1/state/nfl')
-    app.set('state', {
+    home_cache.set('state', {
         ...state.data,
         display_week: Math.max(state.data.display_week, 1)
-    })
+    }, 0)
 
     const allplayers = await getAllPlayers()
-    app.set('allplayers', allplayers)
+    home_cache.set('allplayers', allplayers, 0)
 
     const nflschedule = await axios.get(`https://api.myfantasyleague.com/2023/export?TYPE=nflSchedule&W=ALL&JSON=1`)
 
@@ -57,20 +57,20 @@ module.exports = async (app) => {
     nflschedule.data.fullNflSchedule.nflSchedule.map(matchups_week => {
         return schedule[matchups_week.week] = matchups_week.matchup
     })
-    app.set('schedule', schedule)
+    home_cache.set('schedule', schedule, 0)
 
 
     setTimeout(async () => {
         setInterval(async () => {
             //  update state and allplayers dict every 24 hrs
             const state = await axios.get('https://api.sleeper.app/v1/state/nfl')
-            app.set('state', {
+            home_cache.set('state', {
                 ...state.data,
                 display_week: Math.max(state.data.display_week, 1)
-            })
+            }, 0)
 
             const allplayers = await getAllPlayers()
-            app.set('allplayers', allplayers)
+            home_cache.set('allplayers', allplayers, 0)
 
         }, 24 * 60 * 60 * 1 * 1000)
     }, delay)
