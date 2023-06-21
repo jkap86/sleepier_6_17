@@ -84,23 +84,25 @@ exports.find = async (req, res, home_cache) => {
         const user_data = []
         const user_league_data = []
 
-        all_leagues.forEach(async league => {
+        all_leagues
+            .filter(result => result !== undefined)
+            .forEach(async league => {
 
-            league.users.map(user => {
-                user_data.push({
-                    user_id: user.user_id,
-                    username: user.display_name,
-                    avatar: user.avatar,
-                    type: 'LM',
-                    updatedAt: new Date()
-                })
+                league.users.map(user => {
+                    user_data.push({
+                        user_id: user.user_id,
+                        username: user.display_name,
+                        avatar: user.avatar,
+                        type: 'LM',
+                        updatedAt: new Date()
+                    })
 
-                user_league_data.push({
-                    userUserId: user.user_id,
-                    leagueLeagueId: league.league_id
+                    user_league_data.push({
+                        userUserId: user.user_id,
+                        leagueLeagueId: league.league_id
+                    })
                 })
             })
-        })
 
         try {
             await User.bulkCreate(user_data, { ignoreDuplicates: true })
@@ -113,11 +115,14 @@ exports.find = async (req, res, home_cache) => {
         }
 
         const leagues_to_send = [...new_leagues, ...updated_leagues, ...leagues_up_to_date]
+            .filter(result => result !== undefined)
             .sort((a, b) => league_ids.indexOf(a.league_id) - league_ids.indexOf(b.league_id))
 
 
         try {
-            cache.set(req.body.user_id, JSON.stringify(leagues_to_send), 1800)
+            if (!(leagues_to_send.filter(result => result === undefined)?.length > 0)) {
+                cache.set(req.body.user_id, JSON.stringify(leagues_to_send), 15 * 60)
+            }
         } catch (error) {
             console.log(error)
         }
@@ -361,7 +366,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
 
     const results = await Promise.all(allResults)
 
-    return results.filter(result => result !== undefined);
+    return results;
 }
 
 exports.sync = async (req, res, home_cache) => {

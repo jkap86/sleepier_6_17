@@ -108,88 +108,85 @@ exports.leaguemate = async (req, res) => {
 }
 
 exports.pricecheck = async (req, res) => {
-    let filters = [];
+    const trades_cache = cache_trades.get(`price_check_${req.body.player}_${req.body.player2}`)
 
-    if (req.body.player.includes('.')) {
-        const pick_split = req.body.player.split(' ')
-        const season = pick_split[0]
-        const round = parseInt(pick_split[1]?.split('.')[0])
-        const order = parseInt(pick_split[1]?.split('.')[1])
-
-        filters.push({
-            price_check: {
-                [Op.contains]: [`${season} ${round}.${order}`]
-            }
-        })
+    if (trades_cache) {
+        console.log('trades from cache...')
+        res.send(trades_cache)
     } else {
-        filters.push({
-            price_check: {
-                [Op.contains]: [req.body.player]
-            }
+        console.log('trades from db...')
+        let filters = [];
 
-        })
-    }
-
-    if (req.body.player2) {
-        if (req.body.player2.includes('.')) {
-            const pick_split = req.body.player2.split(' ')
+        if (req.body.player.includes('.')) {
+            const pick_split = req.body.player.split(' ')
             const season = pick_split[0]
             const round = parseInt(pick_split[1]?.split('.')[0])
             const order = parseInt(pick_split[1]?.split('.')[1])
 
             filters.push({
-                players: {
+                price_check: {
                     [Op.contains]: [`${season} ${round}.${order}`]
                 }
             })
         } else {
             filters.push({
-                players: {
-                    [Op.contains]: [req.body.player2]
+                price_check: {
+                    [Op.contains]: [req.body.player]
                 }
+
             })
         }
 
+        if (req.body.player2) {
+            if (req.body.player2.includes('.')) {
+                const pick_split = req.body.player2.split(' ')
+                const season = pick_split[0]
+                const round = parseInt(pick_split[1]?.split('.')[0])
+                const order = parseInt(pick_split[1]?.split('.')[1])
 
-    }
+                filters.push({
+                    players: {
+                        [Op.contains]: [`${season} ${round}.${order}`]
+                    }
+                })
+            } else {
+                filters.push({
+                    players: {
+                        [Op.contains]: [req.body.player2]
+                    }
+                })
+            }
 
 
-    let pcTrades;
-    let players2;
+        }
 
-    try {
-        pcTrades = await Trade.findAndCountAll({
-            order: [['status_updated', 'DESC']],
-            offset: req.body.offset,
-            limit: req.body.limit,
-            where: {
-                [Op.and]: filters
-            },
-            attributes: ['transaction_id', 'status_updated', 'rosters', 'managers', 'adds', 'drops', 'draft_picks', 'leagueLeagueId'],
-            include: {
-                model: League,
-                attributes: ['name', 'avatar', 'scoring_settings', 'roster_positions', 'settings']
-            },
-            raw: true
-        })
 
-        if (!req.body.player2) {
-            players2 = await Trade.findAll({
+        let pcTrades;
+        let players2;
+
+        try {
+            pcTrades = await Trade.findAndCountAll({
+                order: [['status_updated', 'DESC']],
+                offset: req.body.offset,
+                limit: req.body.limit,
                 where: {
                     [Op.and]: filters
                 },
-                attributes: ['players'],
+                attributes: ['transaction_id', 'status_updated', 'rosters', 'managers', 'adds', 'drops', 'draft_picks', 'leagueLeagueId'],
+                include: {
+                    model: League,
+                    attributes: ['name', 'avatar', 'scoring_settings', 'roster_positions', 'settings']
+                },
                 raw: true
             })
+
+
+        } catch (error) {
+            console.log(error)
         }
 
+        cache_trades.set(`price_check_${req.body.player}_${req.body.player2}`, pcTrades, 1800)
 
-    } catch (error) {
-        console.log(error)
+        res.send(pcTrades)
     }
-
-
-
-    res.send({ ...pcTrades, players2: Array.from(new Set(players2?.flat() || [])) })
-
 }
