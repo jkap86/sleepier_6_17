@@ -59,7 +59,7 @@ exports.stats = async (req, res) => {
             .filter(s =>
                 (new Date(s.date).getTime() + 1 * 24 * 60 * 60 * 1000) > new Date(req.body.date1).getTime()
                 && (new Date(s.date).getTime() - 1 * 24 * 60 * 60 * 1000) < new Date(req.body.date2).getTime()
-                && req.body.players.includes(s.player_id)
+                && req.body.players?.includes(s.player_id)
                 && s.stats.pts_ppr
             )
             .map(stats_object => {

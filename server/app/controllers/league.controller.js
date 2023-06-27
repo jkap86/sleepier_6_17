@@ -151,7 +151,7 @@ const getLeaguesToUpsert = async (user_id, league_ids) => {
     //  split leagues into - leagues_to_add: not in db; leagues_to_update: in db but not updated in last 24hrs; 
     //  leagues_up_to_date: in db and updated within 24 hrs
 
-    const cutoff = new Date(new Date() - (24 * 60 * 60 * 1000))
+    const cutoff = new Date(new Date() - (60 * 1000))
 
     const leagues_to_add = league_ids
         .filter(l =>
@@ -255,24 +255,34 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
             //  update current week matchup for existing leagues, get all season matchups through current weekk for new leagues
 
             let matchups = {};
-            if (display_week > 0 && display_week < 19) {
-                const matchup_week = await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${display_week}`)
-                matchups[`matchups_${display_week}`] = matchup_week.data
+            if (league.data.status === 'in_season') {
+                try {
+                    const matchup_week = await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${Math.max(display_week, 1)}`)
+                    matchups[`matchups_${display_week}`] = matchup_week.data
 
-                if (new_league) {
-                    (await Promise.all(Array.from(Array(Math.min(display_week, 18))).keys()))
-                        .map(async week => {
-                            const matchup_prev = await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${week + 1}`)
+                    if (new_league) {
+                        (await Promise.all(Array.from(Array(Math.min(display_week, 18))).keys()))
+                            .filter(key => key + 1 !== Math.max(display_week, 1))
+                            .map(async week => {
+                                const matchup_prev = await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${week + 1}`)
 
-                            matchups[`matchups_${week + 1}`] = matchup_prev.data
+                                matchups[`matchups_${week + 1}`] = matchup_prev.data
 
-                        })
+                            })
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
             }
 
 
 
-            const draft_picks = getDraftPicks(traded_picks.data, rosters.data, users.data, drafts.data, league.data)
+            const draft_picks = (
+                league.data.status === 'in_season'
+                && league.data.settings.type === 2
+            )
+                && getDraftPicks(traded_picks.data, rosters.data, users.data, drafts.data, league.data)
+                || []
 
             const drafts_array = []
 
