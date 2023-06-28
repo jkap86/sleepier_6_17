@@ -258,7 +258,7 @@ const getBatchLeaguesDetails = async (leagueIds, display_week, new_league) => {
             if (league.data.status === 'in_season') {
                 try {
                     const matchup_week = await axios.get(`https://api.sleeper.app/v1/league/${league_id}/matchups/${Math.max(display_week, 1)}`)
-                    matchups[`matchups_${display_week}`] = matchup_week.data
+                    matchups[`matchups_${Math.max(display_week, 1)}`] = matchup_week.data
 
                     if (new_league) {
                         (await Promise.all(Array.from(Array(Math.min(display_week, 18))).keys()))
