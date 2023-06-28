@@ -151,7 +151,7 @@ const getLeaguesToUpsert = async (user_id, league_ids) => {
     //  split leagues into - leagues_to_add: not in db; leagues_to_update: in db but not updated in last 24hrs; 
     //  leagues_up_to_date: in db and updated within 24 hrs
 
-    const cutoff = new Date(new Date() - (60 * 1000))
+    const cutoff = new Date(new Date() - (24 * 60 * 60 * 1000))
 
     const leagues_to_add = league_ids
         .filter(l =>
