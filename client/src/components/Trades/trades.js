@@ -362,13 +362,15 @@ const Trades = ({
                                                                     .filter(p => p.previous_owner_id === roster?.roster_id)
                                                                     .sort((a, b) => (a.season) - b.season || a.round - b.round)
                                                                     .map(pick =>
-                                                                        <tr>
-                                                                            <td colSpan={4} className={`end ${trade.tips?.acquire && trade.tips?.acquire
+                                                                        <tr
+                                                                            className={`end ${trade.tips?.acquire && trade.tips?.acquire
                                                                                 ?.find(p =>
                                                                                     p?.player_id?.season === pick.season
                                                                                     && p?.player_id?.round === pick.round
                                                                                     && p?.player_id?.order === pick.order
-                                                                                )?.manager?.user_id === rid ? 'green left' : 'left'}`}>
+                                                                                )?.manager?.user_id === rid ? 'green left' : 'left'}`}
+                                                                        >
+                                                                            <td colSpan={4} className='left end'>
                                                                                 <p>
                                                                                     <span className="end">
                                                                                         {
